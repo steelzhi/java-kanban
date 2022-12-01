@@ -206,7 +206,7 @@ public class Main {
         String name = scanner.next();
         System.out.println("Введите описание эпика:");
         String description = scanner.next();
-        return new Epic(name, description, null);
+        return new Epic(name, description, "NEW");
     }
 
     private static SubTask createSubTaskByParams() {

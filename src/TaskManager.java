@@ -150,7 +150,6 @@ public class TaskManager {
     public void addEpic(Epic epic) {
         epic.setTaskId(id);
         epics.put(id++, epic);
-        epic.setStatus("NEW");
     }
 
     public Epic updateEpic(int epicId, Epic epic) {
