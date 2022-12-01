@@ -1,5 +1,12 @@
 import java.util.Scanner;
 
+/*
+Никита, добрый день.
+Из-за того, что у меня в "Git Bash" главная ветка называлась "master", а не "main",
+работа загрузилась, но в параллельную ветку. Я обновил папку на github.com и загрузил
+работу в ветку "main".
+ */
+
 public class Main {
     static Scanner scanner = new Scanner(System.in);
 
