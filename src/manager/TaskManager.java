@@ -23,10 +23,8 @@ public class TaskManager {
     }
 
     public void removeAllTasks() {
-        if (isTasksMapEmpty()) {
-            writeAboutEmptyMap();
+        if (isTasksMapEmpty())
             return;
-        }
         tasks.clear();
     }
 
@@ -41,10 +39,8 @@ public class TaskManager {
     }
 
     public Task updateTask(int taskId, Task task) {
-        if (!tasks.keySet().contains(taskId)) {
-            writeAboutMissingId();
+        if (!tasks.keySet().contains(taskId))
             return null;
-        }
         task.setId(taskId);
         tasks.put(taskId, task);
         return task;
@@ -231,15 +227,5 @@ public class TaskManager {
 
     public boolean isSubTasksMapEmpty() {
         return subTasks.isEmpty();
-    }
-
-    // ---------------------------------------------------------------------
-    // Универсальные методы, работающие и с задачами, и с эпиками, и с подзадачами:
-    public void writeAboutMissingId() {
-        System.out.println("Указанного id нет в списке.\n");
-    }
-
-    public void writeAboutEmptyMap() {
-        System.out.println("Список пуст.\n");
     }
 }
