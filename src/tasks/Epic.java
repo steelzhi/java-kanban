@@ -1,10 +1,12 @@
+package tasks;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTasksIds = new ArrayList<>();
 
-    public Epic(String name, String description, String status) {
-        super(name, description, status);
+    public Epic(String name, String description) {
+        super(name, description, "NEW");
     }
 
     public ArrayList<Integer> getSubTasksIds() {
@@ -20,13 +22,16 @@ public class Epic extends Task {
     }
 
     public void removeSubTaskId(int subTaskId) {
-        for (int i = 0; i < subTasksIds.size(); i++) {
-            if (subTasksIds.get(i) == subTaskId)
-                subTasksIds.remove(i);
-        }
+        subTasksIds.remove(Integer.valueOf(subTaskId));
     }
 
     public void removeAllSubTasksIds() {
         subTasksIds.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "id - \"" + id + "\", название - \"" + super.name + "\", описание - \"" + super.description
+                + "\", статус - \"" + super.status + "\". " + "ID входящих в эпик подзадач: " + subTasksIds + "\n";
     }
 }
