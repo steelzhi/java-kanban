@@ -1,12 +1,14 @@
 package tasks;
 
+import status.Status;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTasksIds = new ArrayList<>();
 
     public Epic(String name, String description) {
-        super(name, description, "NEW");
+        super(name, description, Status.NEW);
     }
 
     public ArrayList<Integer> getSubTasksIds() {
@@ -31,7 +33,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "id - \"" + id + "\", название - \"" + super.name + "\", описание - \"" + super.description
+        return "Тип - эпик, id - \"" + id + "\", название - \"" + super.name + "\", описание - \"" + super.description
                 + "\", статус - \"" + super.status + "\". " + "ID входящих в эпик подзадач: " + subTasksIds + "\n";
     }
 }

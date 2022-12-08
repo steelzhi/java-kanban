@@ -1,17 +1,19 @@
 package tasks;
 
+import status.Status;
+
 public class Task {
     String name;
     String description;
-    String status;
+    Status status;
     int id;
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
-        if (status.equals("IN_PROGRESS") || status.equals("DONE"))
+        if (status == Status.IN_PROGRESS || status == Status.DONE)
             this.status = status;
-        else this.status = "NEW";
+        else this.status = Status.NEW;
     }
 
     public String getName() {
@@ -30,11 +32,11 @@ public class Task {
         this.description = description;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -48,7 +50,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "id - \"" + id + "\", название - \"" + name + "\", описание - \"" + description + "\", статус - \""
-                + status + "\"\n";
+        return "Тип - задача, id - \"" + id + "\", название - \"" + name + "\", описание - \"" + description
+                + "\", статус - \"" + status + "\"\n";
     }
 }

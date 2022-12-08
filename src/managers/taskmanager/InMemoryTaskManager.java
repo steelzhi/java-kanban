@@ -1,41 +1,51 @@
-package manager;
+package managers.taskmanager;
 
+import managers.Managers;
+import managers.historymanager.HistoryManager;
+import status.Status;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private int taskId = 1;
     private int epicId = 1;
     private int subTaskId = 1;
+    HistoryManager historyManager = Managers.getDefaultHistory();
 
     // Методы для работы с задачами:
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public void removeAllTasks() {
         if (isTasksMapEmpty())
             return;
         tasks.clear();
     }
 
+    @Override
     public Task findTaskById(int id) {
         return tasks.get(id);
     }
 
+    @Override
     public int addTask(Task task) {
         task.setId(taskId);
         tasks.put(taskId, task);
         return taskId++;
     }
 
+    @Override
     public Task updateTask(int taskId, Task task) {
         if (!tasks.keySet().contains(taskId))
             return null;
@@ -45,6 +55,7 @@ public class TaskManager {
         return task;
     }
 
+    @Override
     public void removeTask(int id) {
         if (isTasksMapEmpty())
             return;
@@ -53,20 +64,32 @@ public class TaskManager {
         return;
     }
 
-    public boolean doesTaskExist(int id) {
+    @Override
+    public Task getTask(int taskId) {
+        if (!doesTaskExist(taskId))
+            return null;
+
+        Task task = tasks.get(taskId);
+        historyManager.add(task);
+        return task;
+    }
+
+    private boolean doesTaskExist(int id) {
         return tasks.containsKey(id);
     }
 
-    public boolean isTasksMapEmpty() {
+    private boolean isTasksMapEmpty() {
         return tasks.isEmpty();
     }
 
     // ---------------------------------------------------------------------
     // Методы для работы с эпиками:
+    @Override
     public ArrayList<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
+    @Override
     public void removeAllEpics() {
         if (isEpicsMapEmpty())
             return;
@@ -75,16 +98,19 @@ public class TaskManager {
         subTasks.clear();
     }
 
+    @Override
     public Epic findEpicById(int epicId) {
         return epics.get(epicId);
     }
 
+    @Override
     public int addEpic(Epic epic) {
         epic.setId(epicId);
         epics.put(epicId, epic);
         return epicId++;
     }
 
+    @Override
     public Epic updateEpic(int epicId, Epic epic) {
         if (!epics.keySet().contains(epicId))
             return null;
@@ -97,6 +123,7 @@ public class TaskManager {
         return epic;
     }
 
+    @Override
     public void removeEpic(int id) {
         if (isEpicsMapEmpty())
             return;
@@ -111,6 +138,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public ArrayList<SubTask> getSubTasksInEpic(int epicId) {
         if (isEpicsMapEmpty())
             return null;
@@ -129,42 +157,53 @@ public class TaskManager {
         return null;
     }
 
-    public boolean doesEpicExist(int id) {
+    @Override
+    public Epic getEpic(int epicId) {
+        if (!doesEpicExist(epicId))
+            return null;
+
+        Epic epic = epics.get(epicId);
+        historyManager.add(epic);
+        return epic;
+    }
+
+    private boolean doesEpicExist(int id) {
         return epics.containsKey(id);
     }
 
-    public boolean isEpicsMapEmpty() {
+    private boolean isEpicsMapEmpty() {
         return epics.isEmpty();
     }
 
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
         if (epic.getSubTasksIds().isEmpty()) {
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
             return;
         }
 
-        String currentStatus = "DONE";
+        Status currentStatus = Status.DONE;
         for (Integer subTaskId : epic.getSubTasksIds()) {
             SubTask subTask = subTasks.get(subTaskId);
-            if (subTask.getStatus().equals("IN_PROGRESS")) {
-                currentStatus = "IN_PROGRESS";
+            if (subTask.getStatus() == Status.IN_PROGRESS) {
+                currentStatus = Status.IN_PROGRESS;
             }
-            if (subTask.getStatus().equals("NEW")) {
-                epic.setStatus("NEW");
+            if (subTask.getStatus() == Status.NEW) {
+                epic.setStatus(Status.NEW);
                 return;
             }
         }
         epic.setStatus(currentStatus);
     }
 
-
     // ---------------------------------------------------------------------
     // Методы для работы с подзадачами:
+    @Override
     public ArrayList<SubTask> getAllSubTasks() {
         return new ArrayList<>(subTasks.values());
     }
 
+    @Override
     public void removeAllSubTasks() {
         if (isSubTasksMapEmpty())
             return;
@@ -176,10 +215,12 @@ public class TaskManager {
         }
     }
 
+    @Override
     public SubTask findSubTaskById(int subTaskId) {
         return subTasks.get(subTaskId);
     }
 
+    @Override
     public int addSubTask(SubTask subTask) {
         if (!epics.containsKey(subTask.getEpicId()))
             return 0;
@@ -192,6 +233,7 @@ public class TaskManager {
         return subTaskId++;
     }
 
+    @Override
     public SubTask updateSubTask(int subTaskId, SubTask subTask) {
         if (!subTasks.containsKey(subTaskId))
             return null;
@@ -208,6 +250,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public void removeSubTask(int id) {
         if (isSubTasksMapEmpty())
             return;
@@ -223,11 +266,28 @@ public class TaskManager {
         }
     }
 
-    public boolean doesSubTaskExist(int id) {
+    @Override
+    public SubTask getSubTask(int subTaskId) {
+        if (!doesSubTaskExist(subTaskId))
+        return null;
+
+        SubTask subTask = subTasks.get(subTaskId);
+        historyManager.add(subTask);
+        return subTask;
+    }
+
+    private boolean doesSubTaskExist(int id) {
         return subTasks.containsKey(id);
     }
 
-    public boolean isSubTasksMapEmpty() {
+    private boolean isSubTasksMapEmpty() {
         return subTasks.isEmpty();
+    }
+
+    // ---------------------------------------------------------------------
+    //Метод, общий для всех видов задач
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }

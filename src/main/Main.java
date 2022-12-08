@@ -1,16 +1,16 @@
 package main;
 
-import manager.TaskManager;
+import managers.Managers;
+import managers.taskmanager.InMemoryTaskManager;
 
 /*
-Никита, приветствую!.
-Тоже рад Вас видеть! Да, я думал, что, как и в предыдущих 2-х спринтах, нужно будет реализовать какое-то (хотя бы
-минимальное) взаимодействие с пользователем, поэтому и переборщил) Но, спасибо, что оценили)
-Вроде, все Ваши замечания исправил, а рекомендации - учел (исправленный код протестировал).
+Никита, добрый день!
+По 3-му спринту все ваши заключительные комментарии (по улучшению работающего кода) я учел и реализовал в 4-м спринте.
+Спасибо!
  */
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager inMemoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
     }
 }
