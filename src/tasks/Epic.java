@@ -20,7 +20,7 @@ public class Epic extends Task {
     }
 
     public void addAllSubTasksIds(ArrayList<Integer> subTasksIds) {
-        this.subTasksIds = subTasksIds;
+        this.subTasksIds.addAll(subTasksIds);
     }
 
     public void removeSubTaskId(int subTaskId) {
@@ -33,7 +33,12 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Тип - эпик, id - \"" + id + "\", название - \"" + super.name + "\", описание - \"" + super.description
-                + "\", статус - \"" + super.status + "\". " + "ID входящих в эпик подзадач: " + subTasksIds + "\n";
+        return "Epic{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", subTasksIds=" + subTasksIds +
+                ", id=" + getId() +
+                '}';
     }
 }

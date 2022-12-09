@@ -2,22 +2,19 @@ package managers.historymanager;
 
 import tasks.Task;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
-    private List<Task> viewedTasks = new ArrayList<>();
+    private final LinkedList<Task> viewedTasks = new LinkedList<>();
+    private static final int MAX_NUMBER_OF_VIEWED_TASKS = 10;
 
     @Override
     public void add(Task task) {
-        if (viewedTasks.size() == 10) {
-            ArrayList<Task> temporaryListForViewedTasks = new ArrayList<>();
-            for (int i = 1; i < viewedTasks.size(); i++) {
-                temporaryListForViewedTasks.add(viewedTasks.get(i));
-            }
-            viewedTasks.clear();
-            viewedTasks.addAll(temporaryListForViewedTasks);
+        if (viewedTasks.size() == MAX_NUMBER_OF_VIEWED_TASKS) {
+            viewedTasks.removeFirst();
         }
+
         viewedTasks.add(task);
     }
 

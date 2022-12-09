@@ -2,7 +2,7 @@ package tasks;
 
 import status.Status;
 
-public class SubTask extends Task{
+public class SubTask extends Task {
     private int epicId;
 
     public SubTask(String name, String description, Status status, int epicId) {
@@ -20,8 +20,12 @@ public class SubTask extends Task{
 
     @Override
     public String toString() {
-        return "Тип - подзадача, id - \"" + id + "\", название - \"" + super.name + "\", описание - \""
-                + super.description + "\", статус - \"" + super.status + "\". "
-                + "ID эпика, в который входит подзадача, - " + epicId + "\n";
+        return "SubTask{" +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                ", epicId=" + epicId +
+                ", id=" + getId() +
+                '}';
     }
 }

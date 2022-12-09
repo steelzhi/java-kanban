@@ -3,10 +3,10 @@ package tasks;
 import status.Status;
 
 public class Task {
-    String name;
-    String description;
-    Status status;
-    int id;
+    private String name;
+    private String description;
+    private Status status;
+    private int id;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -50,7 +50,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Тип - задача, id - \"" + id + "\", название - \"" + name + "\", описание - \"" + description
-                + "\", статус - \"" + status + "\"\n";
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", id=" + id +
+                '}';
     }
 }
