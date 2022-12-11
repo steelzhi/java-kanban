@@ -6,11 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
-    private final LinkedList<Task> viewedTasks = new LinkedList<>();
     private static final int MAX_NUMBER_OF_VIEWED_TASKS = 10;
+    private final LinkedList<Task> viewedTasks = new LinkedList<>();
 
     @Override
     public void add(Task task) {
+        if (task == null) {
+            return;
+        }
+
         if (viewedTasks.size() == MAX_NUMBER_OF_VIEWED_TASKS) {
             viewedTasks.removeFirst();
         }

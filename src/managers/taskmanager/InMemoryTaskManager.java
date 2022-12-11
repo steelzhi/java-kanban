@@ -15,10 +15,10 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int taskId = 1;
     private int epicId = 1;
     private int subTaskId = 1;
-    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     /**
      * Методы для работы с задачами:
@@ -129,19 +129,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public ArrayList<SubTask> getSubTasksInEpic(int epicId) {
-        if (doesEpicExist(epicId)) {
-            Epic epic = epics.get(epicId);
-            if (!epic.getSubTasksIds().isEmpty()) {
-                ArrayList<SubTask> subTasksInEpic = new ArrayList<>();
-                for (Integer subTaskId : epic.getSubTasksIds()) {
-                    SubTask subTask = subTasks.get(subTaskId);
-                    subTasksInEpic.add(subTask);
-                }
-                return subTasksInEpic;
-            }
+        if (!doesEpicExist(epicId)) {
+            return null;
         }
 
-        return null;
+        final Epic epic = epics.get(epicId);
+        final ArrayList<SubTask> subTasksInEpic = new ArrayList<>();
+        for (Integer subTaskId : epic.getSubTasksIds()) {
+            final SubTask subTask = subTasks.get(subTaskId);
+            subTasksInEpic.add(subTask);
+        }
+        return subTasksInEpic;
     }
 
     @Override
