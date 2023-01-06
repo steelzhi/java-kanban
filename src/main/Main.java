@@ -1,11 +1,17 @@
 package main;
 
 import managers.Managers;
+import managers.historymanager.InMemoryHistoryManager;
 import managers.taskmanager.InMemoryTaskManager;
+import status.Status;
+import tasks.Epic;
+import tasks.SubTask;
+import tasks.Task;
 
 /*
 Никита, приветствую!
-Спасибо за замечания и рекомендации! Я все поправил и реализовал.
+С Новым годом, всех Вам благ!
+Проверьте, пожалуйста, выполнение задания по 5-му спринту.
  */
 
 public class Main {

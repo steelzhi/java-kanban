@@ -1,5 +1,6 @@
 package tasks;
 
+import managers.historymanager.Node;
 import status.Status;
 
 public class Task {
