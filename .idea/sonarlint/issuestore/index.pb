@@ -10,3 +10,7 @@ J
 src/managers/Managers.java,2\1\21a45862de69fc2804a7a028677c4050a1cefc48
 F
 src/status/Status.java,e\5\e562d85459c18108426fa07bb700eaca9011bba4
+Y
+)src/managers/taskmanager/TaskManager.java,4\6\46139c5b248fbc3f9b9b0e19c33d604c283dfcc4
+F
+src/tasks/SubTask.java,3\a\3a5a296aa2ddc097348e64ea8407638c5f35be25
