@@ -38,12 +38,11 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         if (head == null) {
             head = newNode;
-            tail = newNode;
         } else {
             newNode.setPrev(tail);
             tail.setNext(newNode);
-            tail = newNode;
         }
+        tail = newNode;
 
         viewedTasks.put(task.getId(), newNode);
     }
@@ -83,8 +82,8 @@ public class InMemoryHistoryManager implements HistoryManager {
                     node.getNext().setPrev(node.getPrev());
                 }
             }
-        }
 
-        viewedTasks.remove(node);
+            viewedTasks.remove(node.getData().getId());
+        }
     }
 }
