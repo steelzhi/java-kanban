@@ -1,8 +1,0 @@
-
-o	java:S100>"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µã®Ÿÿÿÿÿÿ8”¤ƒœà0
-m
-java:S1128"KRemove this unused import 'managers.historymanager.InMemoryHistoryManager'.(ØšÄŠûÿÿÿÿ8”¤ƒœà0
-_
-java:S1128"=Remove this unused import 'org.junit.jupiter.api.Assertions'.(âè¨ùÿÿÿÿ8”¤ƒœà0
-M
-java:S5960"+Remove this assertion from production code.(ó¦ûÿÿÿÿ8÷‡÷›à0
