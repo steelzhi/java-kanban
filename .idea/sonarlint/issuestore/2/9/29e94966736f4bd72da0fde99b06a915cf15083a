@@ -1,0 +1,68 @@
+
+W
+java:S1161":Add the "@Override" annotation above this method signature(¨‹Îµ8±©Ÿà0
+\
+java:S1161!":Add the "@Override" annotation above this method signature(†µˆ†ùÿÿÿÿ8±©Ÿà0
+W
+java:S1161&":Add the "@Override" annotation above this method signature(‚ß‚’8±©Ÿà0
+\
+java:S1161+":Add the "@Override" annotation above this method signature(•Ó˜¾ÿÿÿÿÿ8±©Ÿà0
+W
+java:S11610":Add the "@Override" annotation above this method signature(¢…¨à8±©Ÿà0
+W
+java:S11615":Add the "@Override" annotation above this method signature(üØó«8±©Ÿà0
+\
+java:S1161:":Add the "@Override" annotation above this method signature(ï¥‚òùÿÿÿÿ8±©Ÿà0
+W
+java:S1161@":Add the "@Override" annotation above this method signature(øŞâØ8±©Ÿà0
+W
+java:S1161E":Add the "@Override" annotation above this method signature(“ „Ä8±©Ÿà0
+\
+java:S1161J":Add the "@Override" annotation above this method signature(Çå§ğùÿÿÿÿ8Á©Ÿà0
+\
+java:S1161O":Add the "@Override" annotation above this method signature(Ü¦èÓıÿÿÿÿ8Á©Ÿà0
+V
+java:S1161T":Add the "@Override" annotation above this method signature(²—½@8Á©Ÿà0
+W
+java:S1161Y":Add the "@Override" annotation above this method signature(¡–öç8Á©Ÿà0
+V
+java:S1161^":Add the "@Override" annotation above this method signature(¼ëÈQ8Á©Ÿà0
+W
+java:S1161c":Add the "@Override" annotation above this method signature(“÷´¥8Á©Ÿà0
+\
+java:S1161h":Add the "@Override" annotation above this method signature(³‡ÿÿÿÿÿ8Á©Ÿà0
+W
+java:S1161m":Add the "@Override" annotation above this method signature(¶¬‚½8Á©Ÿà0
+W
+java:S1161r":Add the "@Override" annotation above this method signature(Ï’Á•8Á©Ÿà0
+\
+java:S1161w":Add the "@Override" annotation above this method signature(Å¡¸úÿÿÿÿ8Á©Ÿà0
+W
+java:S1161|":Add the "@Override" annotation above this method signature(èşÎ¥8Á©Ÿà0
+]
+java:S1161":Add the "@Override" annotation above this method signature(¿‹õüÿÿÿÿ8Á©Ÿà0
+]
+java:S1161†":Add the "@Override" annotation above this method signature(¤İÚıÿÿÿÿ8Á©Ÿà0
+]
+java:S1161‹":Add the "@Override" annotation above this method signature(Ÿ“×Åıÿÿÿÿ8Ñ©Ÿà0
+_
+java:S1128"=Remove this unused import 'org.junit.jupiter.api.Assertions'.(œ³«õøÿÿÿÿ8ğà0
+Y
+java:S1128"<Remove this unused import 'org.junit.jupiter.api.BeforeAll'.(—¦¹î8ğà0
+I
+java:S1128"'Remove this unused import 'tasks.Epic'.(«ÊÍøÿÿÿÿ8ğà0
+K
+java:S1128")Remove this unused import 'tasks.Status'.(øóÔ“ıÿÿÿÿ8ğà0
+G
+java:S1128	"*Remove this unused import 'tasks.SubTask'.(£¹¸ù8ğà0
+I
+java:S1128
+"'Remove this unused import 'tasks.Task'.(Ù™»£ûÿÿÿÿ8ğà0
+M
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8ğà0
+M
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8ğà0
+l
+java:S1128"JRemove this unused import 'org.junit.jupiter.api.Assertions.assertEquals'.(ÚÈˆòÿÿÿÿÿ8ğà0
+e
+java:S1128"HRemove this unused import 'org.junit.jupiter.api.Assertions.assertTrue'.(å¥Ş¬8ğà0

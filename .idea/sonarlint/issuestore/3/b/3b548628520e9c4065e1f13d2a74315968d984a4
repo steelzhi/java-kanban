@@ -1,0 +1,13 @@
+
+P
+java:S1117":Rename "taskId" which hides the field declared at line 19.(Ô§ÓÒ
+Q
+java:S2696."6Make the enclosing method "static" or remove this set.(ìº®´ÿÿÿÿÿ
+O
+java:S2864["4Iterate over the "entrySet" instead of the "keySet".(Öì€²ıÿÿÿÿ
+Q
+java:S2696p"6Make the enclosing method "static" or remove this set.(ìº®´ÿÿÿÿÿ
+B
+java:S1168‘"+Return an empty collection instead of null.(¥¹ï
+R
+java:S2696æ"6Make the enclosing method "static" or remove this set.(ìº®´ÿÿÿÿÿ
