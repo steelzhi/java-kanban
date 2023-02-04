@@ -1,0 +1,11 @@
+
+W
+java:S2259U"AA "NullPointerException" could be thrown; "obj" is nullable here.(­Õò”
+N
+java:S2589U"8Remove this expression which always evaluates to "false"(­Õò”
+O
+java:S3400;"9Remove this method and declare a constant for this value.(”·³›
+P
+java:S1128".Remove this unused import 'java.time.Instant'.(Â‚éñÿÿÿÿÿ8‚€ÀÛá0
+W
+java:S1128":Remove this unused import 'java.time.temporal.ChronoUnit'.(Á…§8¸¨ÃÛá0

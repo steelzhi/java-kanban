@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
     void removeAllTasks();
 
@@ -24,7 +24,7 @@ public interface TaskManager {
     Task getTask(int taskId);
 
     // Методы для работы с эпиками:
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
     void removeAllEpics();
 
@@ -36,12 +36,12 @@ public interface TaskManager {
 
     void removeEpic(int id);
 
-    ArrayList<SubTask> getSubTasksInEpic(int epicId);
+    List<SubTask> getSubTasksInEpic(int epicId);
 
     Epic getEpic(int epicId);
 
     // Методы для работы с подзадачами:
-    ArrayList<SubTask> getAllSubTasks();
+    List<SubTask> getAllSubTasks();
 
     void removeAllSubTasks();
 
@@ -58,6 +58,4 @@ public interface TaskManager {
     SubTask getSubTask(int subTaskId);
 
     TreeSet<Task> getPrioritizedTasks();
-
-    boolean doesTasksCrossingExist();
 }

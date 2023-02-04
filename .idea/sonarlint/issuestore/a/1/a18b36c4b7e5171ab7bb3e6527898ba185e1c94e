@@ -1,0 +1,15 @@
+
+_
+java:S1854h"BRemove this useless assignment to local variable "loadingManager".(â·Çæ8æÂÚğá0
+Q	java:S125("<This block of commented-out lines of code should be removed.(…Ù¬Ï
+S	java:S106H"9Replace this use of System.out or System.err by a logger.(§ÚÊ°úÿÿÿÿ
+S	java:S106I"9Replace this use of System.out or System.err by a logger.(’ô§Ïüÿÿÿÿ
+S	java:S106J"9Replace this use of System.out or System.err by a logger.(«ëïšùÿÿÿÿ
+S	java:S106K"9Replace this use of System.out or System.err by a logger.( ìîúÿÿÿÿ
+N	java:S106M"9Replace this use of System.out or System.err by a logger.(Ğ¬¸¬
+N	java:S106\"9Replace this use of System.out or System.err by a logger.(ÂÓÔÛ
+S	java:S106^"9Replace this use of System.out or System.err by a logger.(ÍÖÖûÿÿÿÿ
+]	java:S125a"<This block of commented-out lines of code should be removed.(‘î•¸şÿÿÿÿ8öÂÚğá0
+P
+java:S1481h"3Remove this unused "loadingManager" local variable.(â·Çæ8…ÃÚğá0
+F	java:S108Â")Either remove or fill this block of code.(ï­£Ä8…ÃÚğá0

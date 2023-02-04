@@ -2,9 +2,8 @@ package managers;
 
 import managers.historymanager.HistoryManager;
 import managers.historymanager.InMemoryHistoryManager;
-import managers.taskmanager.FileBackedTasksManager;
-import managers.taskmanager.InMemoryTaskManager;
 import managers.taskmanager.TaskManager;
+import managers.taskmanager.memorymanager.InMemoryTaskManager;
 
 public class Managers {
 

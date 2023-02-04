@@ -1,5 +1,7 @@
-package managers.taskmanager;
+package managers.taskmanager.filemanager;
 
+import managers.taskmanager.memorymanager.InMemoryTaskManager;
+import managers.taskmanager.ManagerSaveException;
 import tasks.Status;
 import tasks.Epic;
 import tasks.SubTask;
@@ -8,19 +10,11 @@ import tasks.TaskTypes;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.time.Instant;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
-
-/*
-Никита, здравствуйте.
-Спасибо за коррективы, все поправил.
-P.S. Вы рекомендовали, в частности, использовать методы BufferedWriter.newLine() и
-System.lineSeparator(). Но у меня в ОС метод newLine() возвращает "\n", а lineSeparator() - "\r\n". Поэтому для
-правильного чтения из файла, запись в который производится посредством newLine(), вместо lineSeparator() я использовал
-просто "\n".
- */
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final String fileName;
@@ -30,18 +24,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static void main(String[] args) {
-        FileBackedTasksManager savingManager = new FileBackedTasksManager("C:\\dev\\java-kanban\\Тестирование (7-й спринт).csv");
+        String fileName = "src\\resources\\Testing (sprint 7).csv";
+        FileBackedTasksManager savingManager =
+                new FileBackedTasksManager(fileName);
         Task task1 = new Task("t1", "1", Status.NEW);
 
         Task task2 = new Task("t2", "1", Status.IN_PROGRESS);
         Task task3 = new Task("t3", "1", Status.DONE);
         Task task4 = new Task("t4", "1", Status.DONE);
 
-        task2.setStartTime(Instant.now().minusSeconds(1000));
+        task2.setStartTime(LocalDateTime.now().minusSeconds(1000));
         task2.setDuration(10);
-        task3.setStartTime(Instant.now().plusSeconds(10001));
+        task3.setStartTime(LocalDateTime.now().plusSeconds(10001));
         task3.setDuration(100000);
-        //task4.setStartTime(Instant.now().minusSeconds(1000000));
+        //task4.setStartTime(LocalDateTime.now().minusSeconds(1000000));
         //task4.setDuration(200000);
         savingManager.addTask(task1);
         savingManager.addTask(task2);
@@ -51,9 +47,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Epic epic1 = new Epic("e1", "2");
         Epic epic2 = new Epic("e2", "2");
         Epic epic3 = new Epic("e3", "2");
-        epic1.setStartTime(Instant.now());
+        epic1.setStartTime(LocalDateTime.now());
         epic1.setDuration(10000);
-        epic2.setStartTime(Instant.now());
+        epic2.setStartTime(LocalDateTime.now());
         epic2.setDuration(10000);
         savingManager.addEpic(epic1);
         savingManager.addEpic(epic2);
@@ -63,11 +59,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         SubTask subTask2 = new SubTask("st2", "3", Status.DONE, epic1.getId());
         SubTask subTask3 = new SubTask("st3", "3", Status.NEW, epic2.getId());
         SubTask subTask4 = new SubTask("st4", "3", Status.DONE, epic3.getId());
-        subTask1.setStartTime(Instant.now().minusSeconds(1000000));
+        subTask1.setStartTime(LocalDateTime.now().minusSeconds(1000000));
         subTask1.setDuration(100000);
-        subTask2.setStartTime(Instant.now().minusSeconds(10000000));
+        subTask2.setStartTime(LocalDateTime.now().minusSeconds(10000000));
         subTask2.setDuration(200000);
-        subTask3.setStartTime(Instant.now().minusSeconds(2000000));
+        subTask3.setStartTime(LocalDateTime.now().minusSeconds(2000000));
         subTask3.setDuration(400000);
         savingManager.addSubTask(subTask1);
         savingManager.addSubTask(subTask2);
@@ -98,18 +94,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             System.out.println(task);
         }
 
-        System.out.println(savingManager.doesTasksCrossingExist());
-
-        savingManager.removeAllSubTasks();
+        //savingManager.removeAllSubTasks();
 
         savingManager.addSubTask(subTask3);
         savingManager.getSubTask(11);
 
         savingManager.removeEpic(4);
 
-        FileBackedTasksManager loadingManager = loadFromFile(
-                new File("C:\\dev\\java-kanban\\Тестирование (7-й спринт).csv"));
-        System.out.println();
+        FileBackedTasksManager loadingManager = loadFromFile(new File(fileName));
     }
 
     public void save() {
@@ -196,6 +188,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 manager.getSubTask(id);
             }
         }
+
+        try {
+            Files.deleteIfExists(Path.of(file.getName()));
+        } catch (IOException e) {
+        }
+
         return manager;
     }
 

@@ -1,0 +1,13 @@
+
+J
+java:S2864<"4Iterate over the "entrySet" instead of the "keySet".(Ô§ÓÒ
+P
+java:S1117<":Rename "taskId" which hides the field declared at line 31.(Ô§ÓÒ
+P
+java:S2864Œ"4Iterate over the "entrySet" instead of the "keySet".(Öì€²ıÿÿÿÿ
+B
+java:S1168Â"+Return an empty collection instead of null.(¥¹ï
+W
+java:S1119û";Refactor the code to remove this label and the need for it.(ØÏŠ±ÿÿÿÿÿ
+P
+java:S2864š"4Iterate over the "entrySet" instead of the "keySet".(ÿ…ôØşÿÿÿÿ

@@ -2,24 +2,21 @@ package tasks;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Task {
     private String name;
     private String description;
     private Status status;
     private int id;
-    private TaskTypes type = TaskTypes.TASK;
-    private int epicId = -1;
 
     private int duration;
-    private Instant startTime;
+    private LocalDateTime startTime;
 
     public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
-        if (status == Status.IN_PROGRESS || status == Status.DONE)
-            this.status = status;
-        else this.status = Status.NEW;
+        this.status = status;
     }
 
     public String getName() {
@@ -55,15 +52,11 @@ public class Task {
     }
 
     public TaskTypes getType() {
-        return type;
+        return TaskTypes.TASK;
     }
 
     public int getEpicId() {
-        return epicId;
-    }
-
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
+        return 0;
     }
 
     @Override
@@ -73,7 +66,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", id=" + id +
-                ", type=" + type +
+                ", type=" + getType() +
                 ", startTime=" + startTime +
                 ", duration=" + duration +
                 '}';
@@ -112,19 +105,19 @@ public class Task {
         this.duration = duration;
     }
 
-    public Instant getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getEndTime() {
+    public LocalDateTime getEndTime() {
         if (startTime == null || duration == 0) {
             return null;
         }
 
-        return startTime.plusSeconds(duration * 60);
+        return startTime.plusMinutes(duration);
     }
 }

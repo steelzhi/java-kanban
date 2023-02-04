@@ -1,0 +1,16 @@
+
+i
+java:S1854"GRemove this useless assignment to local variable "inMemoryTaskManager".(À·öæûÿÿÿÿ8â›òá0
+Z
+java:S1481"8Remove this unused "inMemoryTaskManager" local variable.(À·öæûÿÿÿÿ8ó›òá0
+I
+java:S1128"'Remove this unused import 'tasks.Epic'.(«ÊÍøÿÿÿÿ8ô›òá0
+K
+java:S1128")Remove this unused import 'tasks.Status'.(øóÔ“ıÿÿÿÿ8ô›òá0
+G
+java:S1128"*Remove this unused import 'tasks.SubTask'.(£¹¸ù8õ›òá0
+I
+java:S1128"'Remove this unused import 'tasks.Task'.(Ù™»£ûÿÿÿÿ8ü›òá0
+V
+java:S1128
+"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ8ş›òá0

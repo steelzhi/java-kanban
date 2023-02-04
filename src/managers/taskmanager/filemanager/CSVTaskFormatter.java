@@ -1,9 +1,9 @@
-package managers.taskmanager;
+package managers.taskmanager.filemanager;
 
 import managers.historymanager.HistoryManager;
 import tasks.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +41,9 @@ public class CSVTaskFormatter {
         final Status status = Status.valueOf(taskParams[3]);
         final String description = taskParams[4];
 
-        final Instant startTime;
+        final LocalDateTime startTime;
         if (!taskParams[5].equals("null")) {
-            startTime = Instant.parse(taskParams[5]);
+            startTime = LocalDateTime.parse(taskParams[5]);
         } else {
             startTime = null;
         }

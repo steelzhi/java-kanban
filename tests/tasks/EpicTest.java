@@ -1,13 +1,14 @@
 package tasks;
 
-import managers.taskmanager.InMemoryTaskManager;
+import managers.taskmanager.memorymanager.InMemoryTaskManager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 class EpicTest {
     InMemoryTaskManager manager;
@@ -68,27 +69,28 @@ class EpicTest {
 
     @Test
     public void checkInstantAndDurationInEpicAndSubTasks() {
-        epic.setStartTime(Instant.now());
-        epic.setEndTime(Instant.now().plusSeconds(6000));
-        assertEquals(Instant.now(), epic.getStartTime(), "Неверно рассчитывается время старта эпика");
-        assertEquals(6000 / 60, epic.getDuration(),"Неверно рассчитывается длительность эпика");
+        epic.setStartTime(LocalDateTime.now());
+        epic.setEndTime(LocalDateTime.now().plusSeconds(6000));
+        assertEquals(LocalDateTime.now(), epic.getStartTime(), "Неверно рассчитывается время старта эпика");
+        assertEquals(6000 / 60, (int) Duration.between(epic.getStartTime(), epic.getEndTime()).toMinutes(),
+                "Неверно рассчитывается длительность эпика");
 
         SubTask subTask3 = new SubTask("st1", "3", Status.NEW, epic.getId());
-        subTask3.setStartTime(Instant.now());
+        subTask3.setStartTime(LocalDateTime.now());
         subTask3.setDuration(120);
         manager.addSubTask(subTask3);
 
-        assertEquals(Instant.now(), subTask3.getStartTime(), "Неверно рассчитывается время старта подзадачи");
+        assertEquals(LocalDateTime.now(), subTask3.getStartTime(), "Неверно рассчитывается время старта подзадачи");
         assertEquals(120, subTask3.getDuration(),"Неверно рассчитывается длительность подзадачи");
-        assertEquals(Instant.now().plusSeconds(120 * 60), epic.getEndTime(),
+        assertEquals(LocalDateTime.now().plusSeconds(120 * 60), epic.getEndTime(),
                 "Неверно рассчитывается время окончания эпика с подзадачей");
 
         SubTask subTask4 = new SubTask("st1", "3", Status.NEW, epic.getId());
-        subTask3.setStartTime(Instant.now().minusSeconds(3600));
+        subTask3.setStartTime(LocalDateTime.now().minusSeconds(3600));
         subTask3.setDuration(80);
         manager.addSubTask(subTask4);
 
-        assertEquals(Instant.now().minusSeconds(3600), epic.getStartTime(),
+        assertEquals(LocalDateTime.now().minusSeconds(3600), epic.getStartTime(),
                 "Неверно рассчитывается время начала эпика с подзадачей");
     }
 

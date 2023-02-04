@@ -1,9 +1,7 @@
 package managers.taskmanager;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -14,24 +12,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
-Никита, приветствую!
-Согласно заданию, для каждого метода нужно проверить работу со стандартным поведением, с пустым списком задач и с
-неверным идентификатором задачи. Но, например, для метода removeAllTasks() ввод неверного идентификатора не имеет
-смысла. Поэтому для подобных случаев (когда нет никакой зависимости одного от другого) методы я не писал. Если был не
-прав, сориентируйте, пожалуйста, какие тесты тогда нужно написать для таких ситуаций.
- */
-
 public abstract class TaskManagerTest<T extends TaskManager> {
-    private T manager;
-
-    public T getManager() {
-        return manager;
-    }
-
-    public void setManager(T manager) {
-        this.manager = manager;
-    }
+    protected T manager;
 
     @Test
     public void getTasksCaseStandard() {
@@ -246,7 +228,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void findEpicByIdCaseIncorrectData() {
         Epic epic1 = new Epic("e1", "2");
         manager.addEpic(epic1);
-        int id = epic1.getEpicId() + 1;
+        int id = epic1.getId() + 1;
         assertNull(manager.getEpic(id), "В списке найден эпик с несуществующим id");
 
         IndexOutOfBoundsException ex = assertThrows(IndexOutOfBoundsException.class,

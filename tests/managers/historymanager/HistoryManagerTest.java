@@ -1,6 +1,6 @@
 package managers.historymanager;
 
-import managers.taskmanager.InMemoryTaskManager;
+import managers.taskmanager.memorymanager.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Status;
