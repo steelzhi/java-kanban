@@ -4,9 +4,8 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getTasks();
@@ -57,5 +56,5 @@ public interface TaskManager {
 
     SubTask getSubTask(int subTaskId);
 
-    TreeSet<Task> getPrioritizedTasks();
+    Set<Task> getPrioritizedTasks();
 }

@@ -69,28 +69,29 @@ class EpicTest {
 
     @Test
     public void checkInstantAndDurationInEpicAndSubTasks() {
-        epic.setStartTime(LocalDateTime.now());
-        epic.setEndTime(LocalDateTime.now().plusSeconds(6000));
-        assertEquals(LocalDateTime.now(), epic.getStartTime(), "Неверно рассчитывается время старта эпика");
+        LocalDateTime now = LocalDateTime.now();
+        epic.setStartTime(now);
+        epic.setEndTime(now.plusSeconds(6000));
+        assertEquals(now, epic.getStartTime(), "Неверно рассчитывается время старта эпика");
         assertEquals(6000 / 60, (int) Duration.between(epic.getStartTime(), epic.getEndTime()).toMinutes(),
                 "Неверно рассчитывается длительность эпика");
 
         SubTask subTask3 = new SubTask("st1", "3", Status.NEW, epic.getId());
-        subTask3.setStartTime(LocalDateTime.now());
+        subTask3.setStartTime(now);
         subTask3.setDuration(120);
         manager.addSubTask(subTask3);
 
-        assertEquals(LocalDateTime.now(), subTask3.getStartTime(), "Неверно рассчитывается время старта подзадачи");
+        assertEquals(now, subTask3.getStartTime(), "Неверно рассчитывается время старта подзадачи");
         assertEquals(120, subTask3.getDuration(),"Неверно рассчитывается длительность подзадачи");
-        assertEquals(LocalDateTime.now().plusSeconds(120 * 60), epic.getEndTime(),
+        assertEquals(now.plusSeconds(120 * 60), epic.getEndTime(),
                 "Неверно рассчитывается время окончания эпика с подзадачей");
 
         SubTask subTask4 = new SubTask("st1", "3", Status.NEW, epic.getId());
-        subTask3.setStartTime(LocalDateTime.now().minusSeconds(3600));
+        subTask3.setStartTime(now.minusSeconds(3600));
         subTask3.setDuration(80);
         manager.addSubTask(subTask4);
 
-        assertEquals(LocalDateTime.now().minusSeconds(3600), epic.getStartTime(),
+        assertEquals(now.minusSeconds(3600), epic.getStartTime(),
                 "Неверно рассчитывается время начала эпика с подзадачей");
     }
 

@@ -15,12 +15,27 @@ import java.util.*;
 
 /*
 Никита, здравствуйте.
-1. Вы оставили такой комментарий: "Сортировка должна быть просто по startTime, то есть можно написать просто короче
-Comparator.comparing(Task::getStartTime), если использовать LocalDateTime, хотя так тоже верно :)".
-Но я проверяю также случаи, если у какой-то задачи не задано время старта (startTime == null). Соответственно, можно ли
-каким-то образом использовать нотацию Comparator.comparing(Task::getStartTime) для такой проверки? Или же по логике
-приложения у всех задач должны быть обязательно заданы поля startTime и duration и вышеуказанная ситуация будет исключена?
-2. Все остальное поправил -  проверьте, пожалуйста.
+1. По предложенной Вами конструкции
+     new TreeSet<>(Comparator
+            .comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Task::getId))
+Для меня она пока сложна для восприятия;) Поэтому к имеющейся своей конструкции из Вашей я добавил сравнение по id - в
+случае, если у обеих задач startTime == null. Можно так оставить?
+
+2. Вы указали, что в методе addTask исключение не нужно отлавливать - пусть оно летит дальше. Но, в этом методе я
+отлавливаю исключение с тем расчетом, чтобы предотвратить дальнейшее добавление задачи, пересекающейся по времени с  уже
+имеющимися задачами, в хэшмапу и сет. Если в методе addTask не отлавливать исключение, то каким образом следует
+реализовать недобавление такой задачи в хэшмапу и сет?
+Изначально метод analyzeDoesTaskHaveNoCrossing у меня возвращал тип boolean ("есть ли пересечение с уже имеющимися
+задачами или нет") и по возвращаемому значению определялось, стоит ли добавлять новую задачу в хэшмап и сет. Но, Вы
+написали, что analyzeDoesTaskHaveNoCrossing должен бросать исключение в случае наличия пересечений (поэтому я сделал
+у этого метода тип void).
+Если убрать отлов исключения в методе addTask и передать такой отлов дальше, то, получается, ловить исключение нужно
+будет в main(), где добавляются задачи. Не будет ли это, наоборот, намного более громоздким, чем оставить отлов
+исключения раньше - в методе addTask?
+Или здесь есть какое-то еще, более оптимальное, решение?
+
+3. Все остальные Ваши замечания исправил - проверьте, пожалуйста.
  */
 
 public class InMemoryTaskManager implements TaskManager {
@@ -31,11 +46,14 @@ public class InMemoryTaskManager implements TaskManager {
     protected int taskId = 1;
 
     protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
-        if (o2 == null || o2.getStartTime() == null) {
-            return -1;
+        if (o1.getStartTime() == null && o2.getStartTime() == null) {
+            return o1.getId() - o2.getId();
         }
-        if (o1 == null || o1.getStartTime() == null) {
+        if (o1.getStartTime() == null) {
             return 1;
+        }
+        if (o2.getStartTime() == null) {
+            return -1;
         }
 
         if (o1.getStartTime().isBefore(o2.getStartTime())) {
@@ -74,7 +92,6 @@ public class InMemoryTaskManager implements TaskManager {
         try {
             analyzeDoesTaskHaveNoCrossing(task);
         } catch (TaskValidationException e) {
-            e.getMessage();
             return 0;
         }
 
@@ -93,7 +110,6 @@ public class InMemoryTaskManager implements TaskManager {
         try {
             analyzeDoesTaskHaveNoCrossing(task);
         } catch (TaskValidationException e) {
-            e.getMessage();
             return null;
         }
 
@@ -107,7 +123,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTask(int id) {
-        prioritizedTasks.remove(tasks.get(id));
+        if (tasks.get(id) != null) {
+            prioritizedTasks.remove(tasks.get(id));
+        }
         tasks.remove(id);
         historyManager.remove(id);
     }
@@ -140,6 +158,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int epicId : epics.keySet()) {
             ArrayList<Integer> subTasksIds = epics.get(epicId).getSubTasksIds();
             for (int subTaskId : subTasksIds) {
+                prioritizedTasks.remove(subTasks.get(subTaskId));
                 historyManager.remove(subTaskId);
             }
             historyManager.remove(epicId);
@@ -180,6 +199,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (doesEpicExist(id)) {
             ArrayList<Integer> subTasksIds = epics.get(id).getSubTasksIds();
             for (Integer subTaskId : subTasksIds) {
+                prioritizedTasks.remove(subTasks.get(subTaskId));
                 subTasks.remove(subTaskId);
             }
             epics.remove(id);
@@ -245,20 +265,17 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
 
-        LocalDateTime startTime = subTasksInEpic.get(0).getStartTime();
-        LocalDateTime endTime = subTasksInEpic.get(0).getEndTime();
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
 
-        bypass:
         for (SubTask subTask : subTasksInEpic) {
-            if (subTask.getStartTime() == null || subTask.getDuration() == 0) {
-                continue bypass;
-            }
-
-            if (startTime == null || subTask.getStartTime().isBefore(startTime)) {
-                startTime = subTask.getStartTime();
-            }
-            if (endTime == null || subTask.getEndTime().isAfter(endTime)) {
-                endTime = subTask.getEndTime();
+            if (subTask.getStartTime() != null && subTask.getDuration() != 0) {
+                if (startTime == null || subTask.getStartTime().isBefore(startTime)) {
+                    startTime = subTask.getStartTime();
+                }
+                if (endTime == null || subTask.getEndTime().isAfter(endTime)) {
+                    endTime = subTask.getEndTime();
+                }
             }
         }
 
@@ -305,7 +322,6 @@ public class InMemoryTaskManager implements TaskManager {
         try {
             analyzeDoesTaskHaveNoCrossing(subTask);
         } catch (TaskValidationException e) {
-            e.getMessage();
             return 0;
         }
 
@@ -327,7 +343,6 @@ public class InMemoryTaskManager implements TaskManager {
         try {
             analyzeDoesTaskHaveNoCrossing(subTask);
         } catch (TaskValidationException e) {
-            e.getMessage();
             return null;
         }
 
