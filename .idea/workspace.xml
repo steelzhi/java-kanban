@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="5cbee982-cf26-4454-96bf-a35d1e432f00" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/java-kanban/resources/Testing (sprint 7).csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/java-kanban/resources/Testing (sprint 7).csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/filemanager/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/filemanager/FileBackedTasksManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/memorymanager/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/memorymanager/InMemoryTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/tasks/EpicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/tasks/EpicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/Testing (sprint 7).csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/Testing (sprint 7).csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +54,20 @@
       <recent name="managers.historymanager" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.All in java-kanban (2)">
+    <configuration name="FileBackedTasksManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="managers.taskmanager.filemanager.FileBackedTasksManager" />
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="managers.taskmanager.filemanager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="java-kanban" />
@@ -77,7 +89,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in java-kanban (4)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in java-kanban (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-kanban" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
@@ -93,28 +105,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="EpicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="java-kanban" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tasks.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tasks" />
-      <option name="MAIN_CLASS_NAME" value="tasks.EpicTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in java-kanban (2)" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.FileBackedTasksManager" />
         <item itemvalue="JUnit.All in java-kanban" />
         <item itemvalue="JUnit.All in java-kanban (1)" />
-        <item itemvalue="JUnit.EpicTest" />
-        <item itemvalue="JUnit.All in java-kanban (4)" />
       </list>
     </recent_temporary>
   </component>

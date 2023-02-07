@@ -89,11 +89,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addTask(Task task) {
-        try {
-            analyzeDoesTaskHaveNoCrossing(task);
-        } catch (TaskValidationException e) {
-            return 0;
-        }
+        analyzeDoesTaskHaveNoCrossing(task);
 
         task.setId(taskId);
         tasks.put(taskId, task);
@@ -107,11 +103,7 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
 
-        try {
-            analyzeDoesTaskHaveNoCrossing(task);
-        } catch (TaskValidationException e) {
-            return null;
-        }
+        analyzeDoesTaskHaveNoCrossing(task);
 
         Task oldTask = tasks.get(taskId);
         task.setId(taskId);
@@ -319,11 +311,7 @@ public class InMemoryTaskManager implements TaskManager {
             return 0;
         }
 
-        try {
-            analyzeDoesTaskHaveNoCrossing(subTask);
-        } catch (TaskValidationException e) {
-            return 0;
-        }
+        analyzeDoesTaskHaveNoCrossing(subTask);
 
         subTask.setId(taskId);
         subTasks.put(taskId, subTask);
@@ -340,11 +328,7 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
 
-        try {
-            analyzeDoesTaskHaveNoCrossing(subTask);
-        } catch (TaskValidationException e) {
-            return null;
-        }
+        analyzeDoesTaskHaveNoCrossing(subTask);
 
         SubTask currentSubTask = subTasks.get(subTaskId);
         int epicId = currentSubTask.getEpicId();
@@ -407,7 +391,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void analyzeDoesTaskHaveNoCrossing(Task task) {
         TreeSet<Task> tasksByTime = getPrioritizedTasks();
-        if (tasksByTime.size() < 2) {
+        if (tasksByTime.isEmpty()) {
             return;
         }
 

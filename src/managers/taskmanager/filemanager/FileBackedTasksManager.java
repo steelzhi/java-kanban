@@ -1,5 +1,6 @@
 package managers.taskmanager.filemanager;
 
+import managers.taskmanager.TaskValidationException;
 import managers.taskmanager.memorymanager.InMemoryTaskManager;
 import managers.taskmanager.ManagerSaveException;
 import tasks.Status;
@@ -39,10 +40,26 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         task3.setDuration(100000);
         //task4.setStartTime(LocalDateTime.now().minusSeconds(1000000));
         //task4.setDuration(200000);
-        savingManager.addTask(task1);
-        savingManager.addTask(task2);
-        savingManager.addTask(task3);
-        savingManager.addTask(task4);
+        try {
+            savingManager.addTask(task1);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addTask(task2);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addTask(task3);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addTask(task4);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
 
         Epic epic1 = new Epic("e1", "2");
         Epic epic2 = new Epic("e2", "2");
@@ -65,10 +82,26 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         subTask2.setDuration(200000);
         subTask3.setStartTime(LocalDateTime.now().minusSeconds(2000000));
         subTask3.setDuration(400000);
-        savingManager.addSubTask(subTask1);
-        savingManager.addSubTask(subTask2);
-        savingManager.addSubTask(subTask3);
-        savingManager.addSubTask(subTask4);
+        try {
+            savingManager.addSubTask(subTask1);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addSubTask(subTask2);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addSubTask(subTask3);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            savingManager.addSubTask(subTask4);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("S1: " + subTask1.getStartTime() + " " + subTask1.getEndTime());
         System.out.println("S2: " + subTask2.getStartTime() + " " + subTask2.getEndTime());
         System.out.println("S3: " + subTask3.getStartTime() + " " + subTask3.getEndTime());
@@ -96,7 +129,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         //savingManager.removeAllSubTasks();
 
-        savingManager.addSubTask(subTask3);
+        try {
+            savingManager.addSubTask(subTask3);
+        } catch (TaskValidationException e) {
+            System.out.println(e.getMessage());
+        }
         savingManager.getSubTask(11);
 
         savingManager.removeEpic(4);
