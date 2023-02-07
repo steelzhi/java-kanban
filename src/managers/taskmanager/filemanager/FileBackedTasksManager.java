@@ -121,7 +121,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         savingManager.updateTask(1, new Task("t1", "fasdfas", Status.DONE));
 
-        TreeSet<Task> prioritizedtasks = savingManager.getPrioritizedTasks();
+        List<Task> prioritizedtasks = savingManager.getPrioritizedTasks();
         System.out.println("Задачи в порядке приоритета:");
         for (Task task : prioritizedtasks) {
             System.out.println(task);

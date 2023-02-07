@@ -5,7 +5,6 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.util.List;
-import java.util.Set;
 
 public interface TaskManager {
     List<Task> getTasks();
@@ -56,5 +55,5 @@ public interface TaskManager {
 
     SubTask getSubTask(int subTaskId);
 
-    Set<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 }

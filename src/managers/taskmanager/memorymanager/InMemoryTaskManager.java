@@ -15,27 +15,8 @@ import java.util.*;
 
 /*
 Никита, здравствуйте.
-1. По предложенной Вами конструкции
-     new TreeSet<>(Comparator
-            .comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
-            .thenComparing(Task::getId))
-Для меня она пока сложна для восприятия;) Поэтому к имеющейся своей конструкции из Вашей я добавил сравнение по id - в
-случае, если у обеих задач startTime == null. Можно так оставить?
-
-2. Вы указали, что в методе addTask исключение не нужно отлавливать - пусть оно летит дальше. Но, в этом методе я
-отлавливаю исключение с тем расчетом, чтобы предотвратить дальнейшее добавление задачи, пересекающейся по времени с  уже
-имеющимися задачами, в хэшмапу и сет. Если в методе addTask не отлавливать исключение, то каким образом следует
-реализовать недобавление такой задачи в хэшмапу и сет?
-Изначально метод analyzeDoesTaskHaveNoCrossing у меня возвращал тип boolean ("есть ли пересечение с уже имеющимися
-задачами или нет") и по возвращаемому значению определялось, стоит ли добавлять новую задачу в хэшмап и сет. Но, Вы
-написали, что analyzeDoesTaskHaveNoCrossing должен бросать исключение в случае наличия пересечений (поэтому я сделал
-у этого метода тип void).
-Если убрать отлов исключения в методе addTask и передать такой отлов дальше, то, получается, ловить исключение нужно
-будет в main(), где добавляются задачи. Не будет ли это, наоборот, намного более громоздким, чем оставить отлов
-исключения раньше - в методе addTask?
-Или здесь есть какое-то еще, более оптимальное, решение?
-
-3. Все остальные Ваши замечания исправил - проверьте, пожалуйста.
+Да, не увидел в прошлые разы, чтобы в интерфейсе метод должен возвращать список, а не сет. Поправил - проверьте,
+пожалуйста.
  */
 
 public class InMemoryTaskManager implements TaskManager {
@@ -385,12 +366,14 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    public TreeSet<Task> getPrioritizedTasks() {
-        return (TreeSet<Task>) prioritizedTasks;
+    public List<Task> getPrioritizedTasks() {
+        List<Task> prioritizedTasksList = new ArrayList<>();
+        prioritizedTasksList.addAll(prioritizedTasks);
+        return prioritizedTasksList;
     }
 
     private void analyzeDoesTaskHaveNoCrossing(Task task) {
-        TreeSet<Task> tasksByTime = getPrioritizedTasks();
+        List<Task> tasksByTime = getPrioritizedTasks();
         if (tasksByTime.isEmpty()) {
             return;
         }
