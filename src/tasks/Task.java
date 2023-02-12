@@ -87,14 +87,19 @@ public class Task {
         }
 
         Task task = (Task) obj;
-        return this.getName().equals(task.getName()) &&
-                this.getDescription().equals(task.getDescription()) &&
-                this.getStatus() == task.getStatus() &&
-                this.getId() == task.getId() &&
-                this.getType() == task.getType() &&
-                this.getEpicId() == task.getEpicId() &&
-                this.getStartTime() == task.getEndTime() &&
-                this.getDuration() == task.getDuration();
+
+        boolean doesStartTimeEquals =
+                this.startTime == null ? (task.startTime == null ? true : false)
+                : (task. startTime == null ? false : this.getStartTime().equals(task.getStartTime()) ? true : false);
+
+        return this.getName().equals(task.getName())
+                && this.getDescription().equals(task.getDescription())
+                && this.getStatus() == task.getStatus()
+                && this.getId() == task.getId()
+                && this.getType() == task.getType()
+                && this.getEpicId() == task.getEpicId()
+                && doesStartTimeEquals
+                && this.getDuration() == task.getDuration();
     }
 
     public int getDuration() {

@@ -26,6 +26,10 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
     protected int taskId = 1;
 
+    public void resetTaskIds() {
+        taskId = 1;
+    }
+
     protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
         if (o1.getStartTime() == null && o2.getStartTime() == null) {
             return o1.getId() - o2.getId();

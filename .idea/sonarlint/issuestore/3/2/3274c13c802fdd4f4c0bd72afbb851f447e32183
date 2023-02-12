@@ -5,7 +5,19 @@ N
 java:S2589U"8Remove this expression which always evaluates to "false"(­Υς”
 O
 java:S3400;"9Remove this method and declare a constant for this value.(”·³›
+_
+java:S3358\"DExtract this nested ternary operation into an independent statement.(Ρ•λώÿÿÿÿ
+Z
+java:S3358]"DExtract this nested ternary operation into an independent statement.(Σ—Ϋα
+C
+java:S1125\"(Remove the unnecessary boolean literals.(Ρ•λώÿÿÿÿ
+=
+java:S1125]"'Remove the unnecessary boolean literal.(Σ—Ϋα
+Z
+java:S3358]"DExtract this nested ternary operation into an independent statement.(Σ—Ϋα
+>
+java:S1125]"(Remove the unnecessary boolean literals.(Σ—Ϋα
+I
+java:S1128".Remove this unused import 'java.time.Instant'.(Β‚ιρÿÿÿÿÿ
 P
-java:S1128".Remove this unused import 'java.time.Instant'.(Β‚ιρÿÿÿÿÿ8‚€ΐΫα0
-W
-java:S1128":Remove this unused import 'java.time.temporal.ChronoUnit'.(Α…§8Έ¨ΓΫα0
+java:S1128":Remove this unused import 'java.time.temporal.ChronoUnit'.(Α…§

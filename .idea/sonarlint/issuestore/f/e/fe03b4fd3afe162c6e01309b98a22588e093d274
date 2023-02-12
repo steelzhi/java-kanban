@@ -1,16 +1,16 @@
 
-i
-java:S1854"GRemove this useless assignment to local variable "inMemoryTaskManager".(À·öæûÿÿÿÿ8â›òá0
-Z
-java:S1481"8Remove this unused "inMemoryTaskManager" local variable.(À·öæûÿÿÿÿ8ó›òá0
-I
-java:S1128"'Remove this unused import 'tasks.Epic'.(«ÊÍøÿÿÿÿ8ô›òá0
-K
-java:S1128")Remove this unused import 'tasks.Status'.(øóÔ“ıÿÿÿÿ8ô›òá0
-G
-java:S1128"*Remove this unused import 'tasks.SubTask'.(£¹¸ù8õ›òá0
-I
-java:S1128"'Remove this unused import 'tasks.Task'.(Ù™»£ûÿÿÿÿ8ü›òá0
-V
-java:S1128
-"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ8ş›òá0
+S	java:S106"9Replace this use of System.out or System.err by a logger.(Â«ŸÕüÿÿÿÿ
+N	java:S106"9Replace this use of System.out or System.err by a logger.(À•ù
+S	java:S106"9Replace this use of System.out or System.err by a logger.(Â«ŸÕüÿÿÿÿ
+X	java:S125"<This block of commented-out lines of code should be removed.(ßÁ•¾8˜µ¶«ä0
+Q	java:S1250"<This block of commented-out lines of code should be removed.(…Ù¬Ï
+S	java:S1065"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106:"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106?"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106D"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106_"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106d"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106i"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+S	java:S106n"9Replace this use of System.out or System.err by a logger.(©şêÜúÿÿÿÿ
+N	java:S106q"9Replace this use of System.out or System.err by a logger.(À•ù
+N	java:S106r"9Replace this use of System.out or System.err by a logger.(ıäã
