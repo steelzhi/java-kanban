@@ -13,22 +13,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/*
-Никита, здравствуйте.
-Да, не увидел в прошлые разы, чтобы в интерфейсе метод должен возвращать список, а не сет. Поправил - проверьте,
-пожалуйста.
- */
-
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SubTask> subTasks = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
     protected int taskId = 1;
-
-    public void resetTaskIds() {
-        taskId = 1;
-    }
 
     protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
         if (o1.getStartTime() == null && o2.getStartTime() == null) {
@@ -403,4 +393,16 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
+
+    /**
+     * Эти методы нужен для тестирования классов-серверов:
+     */
+    public void resetTaskIds() {
+        taskId = 1;
+    }
+
+    public int getCurrentTaskId() {
+        return taskId;
+    }
+
 }

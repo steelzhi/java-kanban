@@ -52,7 +52,6 @@ public class KVServer {
         }
     }
 
-    // /save/1?API_TOKEN=1676186824548
     private void save(HttpExchange h) throws IOException {
         try {
             System.out.println("\n/save");
@@ -125,5 +124,13 @@ public class KVServer {
         h.getResponseHeaders().add("Content-Type", "application/json");
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
+    }
+
+    public void stop() {
+        server.stop(0);
+    }
+
+    public Map<String, String> getData() {
+        return data;
     }
 }

@@ -4,19 +4,19 @@ import managers.historymanager.HistoryManager;
 import managers.historymanager.InMemoryHistoryManager;
 import managers.taskmanager.TaskManager;
 import managers.taskmanager.filemanager.FileBackedTasksManager;
-import managers.taskmanager.httptaskmanager.HttpTaskManager;
-import managers.taskmanager.memorymanager.InMemoryTaskManager;
+import managers.taskmanager.httpmanager.HttpTaskManager;
 
 import java.io.IOException;
 
 public class Managers {
+    private static final String URL = "http://localhost:8080/";
 
     public static TaskManager getDefault() throws IOException, InterruptedException {
-        return new HttpTaskManager("http://localhost:8080/");
+        return new HttpTaskManager(URL);
     }
 
     public static FileBackedTasksManager getFileBackedTasksManager() {
-        String fileName = "src\\resources\\Testing (sprint 7).csv";
+        final String fileName = "src\\resources\\Testing (sprint 7).csv";
         return new FileBackedTasksManager(fileName);
     }
 

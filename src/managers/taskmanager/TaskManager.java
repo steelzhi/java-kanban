@@ -51,9 +51,11 @@ public interface TaskManager {
 
     void removeSubTask(int id);
 
-    List<Task> getHistory();
-
     SubTask getSubTask(int subTaskId);
 
+    // Метод для получения истории:
+    List<Task> getHistory();
+
+    // Метод для получения задач в порядке приоритета:
     List<Task> getPrioritizedTasks();
 }

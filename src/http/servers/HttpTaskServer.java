@@ -30,20 +30,18 @@ public class HttpTaskServer {
     private static TaskManager fileBackedTasksManager = Managers.getFileBackedTasksManager();
     static Gson gson = new Gson();
 
+    // Метод main нужен для проверки корректности работы программы с Insomnia
     public static void main(String[] args) throws IOException {
-
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-        System.out.println("Сервер готов к работе.");
-
         httpServer.createContext("/tasks/task/", new TasksHandler());
         httpServer.createContext("/tasks/subtask/", new SubTasksHandler());
         httpServer.createContext("/tasks/epic/", new EpicsHandler());
         httpServer.createContext("/tasks/history/", new HistoryHandler());
         httpServer.createContext("/tasks/", new PrioritizedTasksHandler());
+        System.out.println("Сервер готов к работе.");
 
         httpServer.start();
-        //addValuesAndActionsForTest((FileBackedTasksManager) fileBackedTasksManager);
-
+        addValuesAndActionsForTest((FileBackedTasksManager) fileBackedTasksManager);
     }
 
     public static TaskManager getfileBackedTasksManager() {
@@ -276,37 +274,41 @@ public class HttpTaskServer {
 
     private static boolean isQueryIncorrect(HttpExchange exchange) {
         URI uri = exchange.getRequestURI();
-        String path = uri.getPath();
-        if (!path.contains("/tasks/")) {
+        String pathAndQuery = uri.getPath();
+        if (uri.getQuery() != null) {
+            pathAndQuery += "?" + uri.getQuery();
+        }
+
+        if (!pathAndQuery.contains("/tasks/")) {
             return true;
         }
 
         String method = exchange.getRequestMethod();
         if (method.equals("GET")) {
-            if (path.equals("/tasks/task/")
-                    || path.contains("/tasks/task/?id=")
-                    || path.equals("/tasks/subtask/")
-                    || path.contains("/tasks/subtask/?id=")
-                    || path.equals("/tasks/epic/")
-                    || path.contains("/tasks/epic/?id=")
-                    || path.contains("/tasks/subtask/epic/?id=")
-                    || path.equals("/tasks/history/")
-                    || path.equals("/tasks/")) {
+            if (pathAndQuery.equals("/tasks/task/")
+                    || pathAndQuery.contains("/tasks/task/?id=")
+                    || pathAndQuery.equals("/tasks/subtask/")
+                    || pathAndQuery.contains("/tasks/subtask/?id=")
+                    || pathAndQuery.equals("/tasks/epic/")
+                    || pathAndQuery.contains("/tasks/epic/?id=")
+                    || pathAndQuery.contains("/tasks/subtask/epic/?id=")
+                    || pathAndQuery.equals("/tasks/history/")
+                    || pathAndQuery.equals("/tasks/")) {
                 return false;
             }
         } else if (method.equals("POST")) {
-            if (path.contains("/tasks/task/")
-                    || path.contains("/tasks/subtask/")
-                    || path.contains("/tasks/epic/")) {
+            if (pathAndQuery.contains("/tasks/task/")
+                    || pathAndQuery.contains("/tasks/subtask/")
+                    || pathAndQuery.contains("/tasks/epic/")) {
                 return false;
             }
         } else if (method.equals("DELETE")) {
-            if (path.equals("/tasks/task/")
-                    || path.contains("/tasks/task/?id=")
-                    || path.equals("/tasks/subtask/")
-                    || path.contains("/tasks/subtask/?id=")
-                    || path.equals("/tasks/epic/")
-                    || path.contains("/tasks/epic/?id=")) {
+            if (pathAndQuery.equals("/tasks/task/")
+                    || pathAndQuery.contains("/tasks/task/?id=")
+                    || pathAndQuery.equals("/tasks/subtask/")
+                    || pathAndQuery.contains("/tasks/subtask/?id=")
+                    || pathAndQuery.equals("/tasks/epic/")
+                    || pathAndQuery.contains("/tasks/epic/?id=")) {
                 return false;
             }
         }
@@ -356,7 +358,7 @@ public class HttpTaskServer {
     private static void writeError400Message(HttpExchange exchange, String query) throws IOException {
         sendResponseHeaders(query, exchange, 400);
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write("Неверно составлен запрос.".getBytes());
+            os.write("Неверно составлен запрос".getBytes());
         }
     }
 
@@ -421,7 +423,8 @@ public class HttpTaskServer {
         return jsonInUrlFormat;
     }
 
-    /*private static void addValuesAndActionsForTest(FileBackedTasksManager manager) {
+    // Добавление данных для метода main
+    private static void addValuesAndActionsForTest(FileBackedTasksManager manager) {
         Task task1 = new Task("t1", "1", Status.NEW);
         Task task2 = new Task("t2", "1", Status.IN_PROGRESS);
         Task task3 = new Task("t3", "1", Status.DONE);
@@ -528,8 +531,6 @@ public class HttpTaskServer {
             System.out.println(task);
         }
 
-        //savingManager.removeAllSubTasks();
-
         try {
             manager.addSubTask(subTask3);
         } catch (TaskValidationException e) {
@@ -539,6 +540,7 @@ public class HttpTaskServer {
 
         manager.removeEpic(4);
 
+        // Получение всех задач:
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/tasks/task/");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
@@ -548,29 +550,25 @@ public class HttpTaskServer {
             }.getType();
             List<Task> taskList = gson.fromJson(response.body(), type);
             System.out.println(taskList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
+        // Добавление задачи:
         Task task5 = new Task("t6", "1", Status.DONE);
         String json = gson.toJson(task5);
         System.out.println(json);
         String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/task/");
-
         url = URI.create(uri);
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println(response.body());
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e1) {
-            System.out.println("2");
         }
 
+        // Получение задачи с id = 1:
         url = URI.create("http://localhost:8080/tasks/task/?id=1");
         request = HttpRequest.newBuilder().uri(url).GET().build();
         try {
@@ -578,12 +576,8 @@ public class HttpTaskServer {
             String responseBody = response.body();
             Task task = gson.fromJson(responseBody, Task.class);
             System.out.println(task);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-
-    }*/
-
+    }
 }

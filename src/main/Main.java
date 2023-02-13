@@ -4,7 +4,7 @@ import http.servers.KVServer;
 import http.client.KVTaskClient;
 import managers.Managers;
 import managers.taskmanager.TaskValidationException;
-import managers.taskmanager.httptaskmanager.HttpTaskManager;
+import managers.taskmanager.httpmanager.HttpTaskManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -17,24 +17,15 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         KVServer server = new KVServer();
         server.start();
+        HttpTaskManager httpTaskManager = (HttpTaskManager) Managers.getDefault();
+        KVTaskClient taskClient = httpTaskManager.getTaskClient();
 
-        KVTaskClient taskClient = new KVTaskClient("http://localhost:8080/");
-        taskClient.put("2", "Hi!");
+        taskClient.put("2", "This is value");
         System.out.println(taskClient.load("2"));
         taskClient.put("3", "fff!");
         System.out.println(taskClient.load("3"));
-        taskClient.put("2", "?");
+        taskClient.put("2", "This is new value");
         System.out.println(taskClient.load("2"));
-
-        HttpTaskManager httpTaskManager = (HttpTaskManager) Managers.getDefault();
-        /*Task task1 = new Task("t1", "1", Status.NEW);
-        httpTaskManager.addTask(task1);
-        System.out.println(taskClient.load(String.valueOf(task1.getId())));
-
-        Task task2 = new Task("t2", "1", Status.NEW);
-        httpTaskManager.addTask(task2);
-        System.out.println(taskClient.load(String.valueOf(task2.getId())));*/
-
 
         Task task1 = new Task("t1", "1", Status.NEW);
         Task task2 = new Task("t2", "1", Status.IN_PROGRESS);
@@ -113,5 +104,7 @@ public class Main {
         System.out.println(taskClient.load("3"));
         System.out.println(taskClient.load("7"));
 
+        // При тестировании через Insomnia этот метод нужно закомментировать:
+        server.stop();
     }
 }

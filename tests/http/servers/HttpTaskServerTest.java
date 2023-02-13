@@ -4,13 +4,11 @@
 package http.servers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpServer;
-import managers.Managers;
-import managers.taskmanager.TaskManager;
 import managers.taskmanager.TaskValidationException;
 import managers.taskmanager.filemanager.FileBackedTasksManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Epic;
@@ -19,6 +17,7 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,21 +26,21 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Type;
-import com.google.gson.reflect.TypeToken;
 
-import static http.servers.HttpTaskServer.*;
+import static http.servers.HttpTaskServer.getJsonInUrlFormat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
     FileBackedTasksManager manager = (FileBackedTasksManager) HttpTaskServer.getfileBackedTasksManager();
     Gson gson = new Gson();
-    HttpClient client = HttpClient.newHttpClient();;
+    HttpClient client = HttpClient.newHttpClient();
     URI url;
     HttpRequest request;
     HttpResponse<String> response;
     Type type;
     List<Task> taskList;
+    List<Epic> epicList;
+    List<SubTask> subTaskList;
     HttpServer httpServer;
     Task task1;
     Task task2;
@@ -54,6 +53,7 @@ class HttpTaskServerTest {
     SubTask subTask2;
     SubTask subTask3;
     SubTask subTask4;
+    LocalDateTime now = LocalDateTime.now();
 
     @BeforeEach
     public void addValuesAndActionsForTest() throws IOException {
@@ -65,8 +65,6 @@ class HttpTaskServerTest {
         httpServer.createContext("/tasks/", new HttpTaskServer.PrioritizedTasksHandler());
         httpServer.start();
         System.out.println("Сервер начал работу.");
-
-        LocalDateTime now = LocalDateTime.now();;
 
         task1 = new Task("t1", "1", Status.NEW);
         task2 = new Task("t2", "1", Status.IN_PROGRESS);
@@ -155,52 +153,6 @@ class HttpTaskServerTest {
             System.out.println(e.getMessage());
         }
         manager.getSubTask(11);
-
-        /*HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task/");
-        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Type type = new TypeToken<ArrayList<Task>>() {
-            }.getType();
-            List<Task> taskList = gson.fromJson(response.body(), type);
-            System.out.println(taskList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Task task5 = new Task("t6", "1", Status.DONE);
-        String json = gson.toJson(task5);
-        System.out.println(json);
-        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/task/");
-
-        url = URI.create(uri);
-        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
-        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println(response.body());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e1) {
-            System.out.println("2");
-        }
-
-        url = URI.create("http://localhost:8080/tasks/task/?id=1");
-        request = HttpRequest.newBuilder().uri(url).GET().build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            Task task = gson.fromJson(responseBody, Task.class);
-            System.out.println(task);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     @Test
@@ -210,7 +162,8 @@ class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(url).GET().build();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            type = new TypeToken<ArrayList<Task>>() {}.getType();
+            type = new TypeToken<ArrayList<Task>>() {
+            }.getType();
             taskList = gson.fromJson(response.body(), type);
         } catch (IOException | InterruptedException e) {
         }
@@ -236,7 +189,7 @@ class HttpTaskServerTest {
 
     @Test
     public void findTaskById() {
-        url = URI.create("http://localhost:8080/tasks/task/?id=2");
+        url = URI.create("http://localhost:8080/tasks/task/?id=" + task2.getId());
         request = HttpRequest.newBuilder().uri(url).GET().build();
         Task task = null;
         try {
@@ -245,13 +198,13 @@ class HttpTaskServerTest {
         } catch (IOException | InterruptedException e) {
         }
 
-        assertEquals(task2, task,  "Задачи не совпадают");
+        assertEquals(task2, task, "Найденная задача не совпадает с искомой");
     }
 
     @Test
     public void addTask() {
         Task task6 = new Task("t6", "1", Status.DONE);
-        task6.setId(9);
+        task6.setId(manager.getCurrentTaskId());
         String json = gson.toJson(task6);
         String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/task/");
 
@@ -259,17 +212,17 @@ class HttpTaskServerTest {
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
         }
 
-        assertTrue(manager.getTasks().contains(task6),  "Задачи не совпадают");
+        assertTrue(manager.getTasks().contains(task6), "Ошибка добавления задачи в список");
     }
 
     @Test
     public void updateTask() {
         Task task6 = new Task("t6", "1", Status.DONE);
-        task6.setId(1);
+        task6.setId(task1.getId());
         String json = gson.toJson(task6);
         String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/task/");
 
@@ -277,11 +230,11 @@ class HttpTaskServerTest {
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
         }
 
-        assertEquals(manager.getTasks().get(0), task6,  "Задача некорректно обновлена");
+        assertEquals(manager.getTasks().get(0), task6, "Задача некорректно обновлена");
     }
 
     @Test
@@ -299,7 +252,7 @@ class HttpTaskServerTest {
     @Test
     public void getTask() {
         Task task = null;
-        url = URI.create("http://localhost:8080/tasks/task/?id=3");
+        url = URI.create("http://localhost:8080/tasks/task/?id=" + task3.getId());
         request = HttpRequest.newBuilder().uri(url).GET().build();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -307,11 +260,289 @@ class HttpTaskServerTest {
         } catch (IOException | InterruptedException e) {
         }
 
-        System.out.println(manager.getTasks());
-
         assertEquals(task3, task, "Задачи не совпадают");
     }
 
+    @Test
+    public void getEpics() {
+        epicList = null;
+        url = URI.create("http://localhost:8080/tasks/epic/");
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            type = new TypeToken<ArrayList<Epic>>() {
+            }.getType();
+            epicList = gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getEpics().size(), epicList.size(), "Размеры списков не совпадают");
+
+        for (int i = 0; i < manager.getEpics().size(); i++) {
+            assertEquals(manager.getEpics().get(i), epicList.get(i), "Эпики с номером " + i + " не совпадают");
+        }
+    }
+
+    @Test
+    public void removeAllEpics() {
+        url = URI.create("http://localhost:8080/tasks/epic/");
+        request = HttpRequest.newBuilder().uri(url).DELETE().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertTrue(manager.getEpics().isEmpty(), "Список эпиков не пуст");
+    }
+
+    @Test
+    public void findEpicById() {
+        url = URI.create("http://localhost:8080/tasks/epic/?id=" + epic1.getId());
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        Epic epic = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            epic = gson.fromJson(response.body(), Epic.class);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(epic1, epic, "Найденный эпик не совпадает с искомым");
+    }
+
+    @Test
+    public void addEpic() {
+        Epic epic4 = new Epic("e4", "2");
+        epic4.setId(manager.getCurrentTaskId());
+        String json = gson.toJson(epic4);
+        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/epic/");
+
+        url = URI.create(uri);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
+        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertTrue(manager.getEpics().contains(epic4), "Ошибка добавления эпика в список");
+    }
+
+    @Test
+    public void updateEpic() {
+        Epic epic4 = new Epic("e4", "2");
+        epic4.setId(epic1.getId());
+        String json = gson.toJson(epic4);
+        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/epic/");
+
+        url = URI.create(uri);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
+        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getEpics().get(0), epic4, "Эпик некорректно обновлен");
+    }
+
+    @Test
+    public void removeEpic() {
+        url = URI.create("http://localhost:8080/tasks/epic/?id=" + epic2.getId());
+        request = HttpRequest.newBuilder().uri(url).DELETE().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertFalse(manager.getEpics().contains(epic2), "Эпик некорректно удален");
+    }
+
+    @Test
+    public void getSubTasksInEpic() {
+        url = URI.create("http://localhost:8080/tasks/subtask/epic/?id=" + epic3.getId());
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        List<SubTask> subtaskList = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            type = new TypeToken<ArrayList<SubTask>>() {
+            }.getType();
+            subtaskList = gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getSubTasksInEpic(epic3.getId()).size(), subtaskList.size(),
+                "Размеры списков не совпадают");
+
+        for (int i = 0; i < manager.getSubTasksInEpic(epic3.getId()).size(); i++) {
+            assertEquals(manager.getSubTasksInEpic(epic3.getId()).get(i), subtaskList.get(i),
+                    "Подзадачи с номером " + i + " из эпика " + epic3.getId() + " не совпадают");
+        }
+    }
+
+    @Test
+    public void getEpic() {
+        Epic epic = null;
+        url = URI.create("http://localhost:8080/tasks/epic/?id=" + epic2.getId());
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            epic = gson.fromJson(response.body(), Epic.class);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(epic2, epic, "Эпики не совпадают");
+    }
+
+    @Test
+    public void getAllSubTasks() {
+        subTaskList = null;
+        url = URI.create("http://localhost:8080/tasks/subtask/");
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            type = new TypeToken<ArrayList<SubTask>>() {
+            }.getType();
+            subTaskList = gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getAllSubTasks().size(), subTaskList.size(), "Размеры списков не совпадают");
+
+        for (int i = 0; i < manager.getAllSubTasks().size(); i++) {
+            assertEquals(manager.getAllSubTasks().get(i), subTaskList.get(i),
+                    "Подзадачи с номером " + i + " не совпадают");
+        }
+    }
+
+    @Test
+    public void removeAllSubTasks() {
+        url = URI.create("http://localhost:8080/tasks/subtask/");
+        request = HttpRequest.newBuilder().uri(url).DELETE().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertTrue(manager.getAllSubTasks().isEmpty(), "Список подзадач не пуст");
+    }
+
+    @Test
+    public void findSubTaskById() {
+        url = URI.create("http://localhost:8080/tasks/subtask/?id=" + subTask4.getId());
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        SubTask subTask = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            subTask = gson.fromJson(response.body(), SubTask.class);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(subTask4, subTask, "Найденная подзадача не совпадает с искомой");
+    }
+
+    @Test
+    public void addSubTask() {
+        SubTask subTask5 = new SubTask("st5", "3", Status.DONE, epic3.getId());
+        subTask5.setId(manager.getCurrentTaskId());
+        String json = gson.toJson(subTask5);
+        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/subtask/");
+
+        url = URI.create(uri);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
+        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertTrue(manager.getAllSubTasks().contains(subTask5), "Ошибка добавления подзадачи в список");
+    }
+
+    @Test
+    public void updateSubTask() {
+        SubTask subTask5 = new SubTask("st5", "3", Status.DONE, epic3.getId());
+        subTask5.setId(subTask4.getId());
+        String json = gson.toJson(subTask5);
+        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/subtask/");
+
+        url = URI.create(uri);
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
+        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getAllSubTasks().get(0), subTask5, "Подзадача некорректно обновлена");
+    }
+
+    @Test
+    public void removeSubTask() {
+        url = URI.create("http://localhost:8080/tasks/subtask/?id=" + subTask4.getId());
+        request = HttpRequest.newBuilder().uri(url).DELETE().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertFalse(manager.getAllSubTasks().contains(subTask4), "Подзадача некорректно удалена");
+    }
+
+    @Test
+    public void getSubTask() {
+        SubTask subTask = null;
+        url = URI.create("http://localhost:8080/tasks/subtask/?id=" + subTask4.getId());
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            subTask = gson.fromJson(response.body(), SubTask.class);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(subTask4, subTask, "Подзадачи не совпадают");
+    }
+
+    @Test
+    public void getHistory() {
+        List<Task> historyList = null;
+        url = URI.create("http://localhost:8080/tasks/history/");
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            type = new TypeToken<ArrayList<Task>>() {
+            }.getType();
+            historyList = gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getHistory().size(), historyList.size(), "Размеры списков не совпадают");
+
+        for (int i = 0; i < manager.getHistory().size(); i++) {
+            assertEquals(manager.getHistory().get(i).getId(), historyList.get(i).getId(),
+                    "Задачи с номером " + i + " в истории не совпадают");
+        }
+    }
+
+    @Test
+    public void getPrioritizedTasks() {
+        List<Task> prioritizedTaskList = null;
+        url = URI.create("http://localhost:8080/tasks/");
+        request = HttpRequest.newBuilder().uri(url).GET().build();
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            type = new TypeToken<ArrayList<Task>>() {
+            }.getType();
+            prioritizedTaskList = gson.fromJson(response.body(), type);
+        } catch (IOException | InterruptedException e) {
+        }
+
+        assertEquals(manager.getPrioritizedTasks().size(), prioritizedTaskList.size(), "Размеры списков не совпадают");
+
+        for (int i = 0; i < manager.getPrioritizedTasks().size(); i++) {
+            assertEquals(manager.getPrioritizedTasks().get(i).getId(), prioritizedTaskList.get(i).getId(),
+                    "Задачи с номером " + i + " в приоритизированном списке не совпадают");
+        }
+    }
 
     @AfterEach
     public void stopServer() {
@@ -321,5 +552,4 @@ class HttpTaskServerTest {
         manager.resetTaskIds();
         httpServer.stop(0);
     }
-
 }

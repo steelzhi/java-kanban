@@ -1,4 +1,4 @@
-package managers.taskmanager.httptaskmanager;
+package managers.taskmanager.httpmanager;
 
 import com.google.gson.Gson;
 import http.client.KVTaskClient;
@@ -10,10 +10,10 @@ import tasks.Task;
 import java.io.IOException;
 
 public class HttpTaskManager extends FileBackedTasksManager {
-    KVTaskClient taskClient;
+    private KVTaskClient taskClient;
 
-    // FileBackedTasksManager нужен, чтобы добавляемым на сервер задачам присваивался корректный id
-    FileBackedTasksManager fileBackedTasksManager
+    // FileBackedTasksManager нужен, чтобы добавляемым на сервер задачам присваивался корректный id.
+    private final FileBackedTasksManager fileBackedTasksManager
             = new FileBackedTasksManager("src\\resources\\Testing (sprint 7).csv");
 
     public HttpTaskManager(String url) throws IOException, InterruptedException {
@@ -93,5 +93,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
     private static String idToString(Task task) {
         return String.valueOf(task.getId());
+    }
+
+    public KVTaskClient getTaskClient() {
+        return taskClient;
     }
 }
