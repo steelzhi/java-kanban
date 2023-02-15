@@ -1,3 +1,21 @@
+/*
+Никита, здравствуйте.
+Взаимно!
+Не понял некоторые Ваши замечания. Поясните, пожалуйста, подробнее:
+1. Класс HttpTaskServer. Вы написали:
+"static class PrioritizedTasksHandler implements HttpHandler {
+Сортированные задачи восстановятся сами собой после добавления задач. Можно отдельно их не читать".
+Но, согласно ТЗ нужно обрабатывать запросы по адресу /tasks/. Соответственно, как обработать запросы по этому адресу,
+если не писать обработчик PrioritizedTasksHandler?
+2. Класс KVTaskClient. Вы написали:
+" public KVTaskClient(String url) throws IOException, InterruptedException {
+Лучше бросать непроверяемые исключения. Эти исключения слишком общие".
+Но, как выбрасывать непроверяемые исключения вместо проверяемых, если метод send у KVTaskClient (согласно спецификации)
+должен выбрасывать проверяемые исключения?
+3. Все остальное поправил. Проверьте, пожалуйста.
+ */
+
+
 package main;
 
 import http.servers.KVServer;
@@ -17,15 +35,10 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         KVServer server = new KVServer();
         server.start();
+
         HttpTaskManager httpTaskManager = (HttpTaskManager) Managers.getDefault();
         KVTaskClient taskClient = httpTaskManager.getTaskClient();
-
-        taskClient.put("2", "This is value");
-        System.out.println(taskClient.load("2"));
-        taskClient.put("3", "fff!");
-        System.out.println(taskClient.load("3"));
-        taskClient.put("2", "This is new value");
-        System.out.println(taskClient.load("2"));
+        httpTaskManager.setKey("1");
 
         Task task1 = new Task("t1", "1", Status.NEW);
         Task task2 = new Task("t2", "1", Status.IN_PROGRESS);
@@ -101,8 +114,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        System.out.println(taskClient.load("3"));
-        System.out.println(taskClient.load("7"));
+        System.out.println(taskClient.load("1"));
 
         // При тестировании через Insomnia этот метод нужно закомментировать:
         server.stop();

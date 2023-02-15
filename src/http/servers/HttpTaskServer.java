@@ -8,7 +8,6 @@ import com.sun.net.httpserver.HttpServer;
 import managers.Managers;
 import managers.taskmanager.TaskManager;
 import managers.taskmanager.TaskValidationException;
-import managers.taskmanager.filemanager.FileBackedTasksManager;
 import tasks.Epic;
 import tasks.Status;
 import tasks.SubTask;
@@ -16,7 +15,6 @@ import tasks.Task;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,30 +23,26 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.Type;
 
 public class HttpTaskServer {
-    private static TaskManager fileBackedTasksManager = Managers.getFileBackedTasksManager();
-    static Gson gson = new Gson();
+    private TaskManager fileBackedTasksManager;
+    private Gson gson = new Gson();
+    private HttpServer httpServer;
 
-    // Метод main нужен для проверки корректности работы программы с Insomnia
-    public static void main(String[] args) throws IOException {
-        HttpServer httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
+    public HttpTaskServer() throws IOException {
+        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
         httpServer.createContext("/tasks/task/", new TasksHandler());
         httpServer.createContext("/tasks/subtask/", new SubTasksHandler());
         httpServer.createContext("/tasks/epic/", new EpicsHandler());
         httpServer.createContext("/tasks/history/", new HistoryHandler());
         httpServer.createContext("/tasks/", new PrioritizedTasksHandler());
-        System.out.println("Сервер готов к работе.");
-
         httpServer.start();
-        addValuesAndActionsForTest((FileBackedTasksManager) fileBackedTasksManager);
+        System.out.println("Сервер начал работу");
+        fileBackedTasksManager = Managers.getFileBackedTasksManager();
     }
 
-    public static TaskManager getfileBackedTasksManager() {
-        return fileBackedTasksManager;
-    }
-
-    static class TasksHandler implements HttpHandler {
+    class TasksHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             URI uri = exchange.getRequestURI();
@@ -108,7 +102,7 @@ public class HttpTaskServer {
         }
     }
 
-    static class SubTasksHandler implements HttpHandler {
+    class SubTasksHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             URI uri = exchange.getRequestURI();
@@ -178,7 +172,7 @@ public class HttpTaskServer {
         }
     }
 
-    static class EpicsHandler implements HttpHandler {
+    class EpicsHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             URI uri = exchange.getRequestURI();
@@ -240,7 +234,7 @@ public class HttpTaskServer {
         }
     }
 
-    static class HistoryHandler implements HttpHandler {
+    class HistoryHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             String query = "/tasks/history/";
@@ -256,7 +250,7 @@ public class HttpTaskServer {
         }
     }
 
-    static class PrioritizedTasksHandler implements HttpHandler {
+    class PrioritizedTasksHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             String query = "/tasks/";
@@ -337,11 +331,11 @@ public class HttpTaskServer {
         return taskInJsonFormat;
     }
 
-    private static <T> String toJson(List<T> tasks) {
+    private <T> String toJson(List<T> tasks) {
         return gson.toJson(tasks);
     }
 
-    private static String toJson(Task task) {
+    private String toJson(Task task) {
         return gson.toJson(task);
     }
 
@@ -382,7 +376,7 @@ public class HttpTaskServer {
         }
     }
 
-    private static boolean taskAlreadyExists(Task task) {
+    private boolean taskAlreadyExists(Task task) {
         if (task instanceof Epic) {
             List<Epic> epics = fileBackedTasksManager.getEpics();
             for (Epic epic : epics) {
@@ -423,161 +417,13 @@ public class HttpTaskServer {
         return jsonInUrlFormat;
     }
 
-    // Добавление данных для метода main
-    private static void addValuesAndActionsForTest(FileBackedTasksManager manager) {
-        Task task1 = new Task("t1", "1", Status.NEW);
-        Task task2 = new Task("t2", "1", Status.IN_PROGRESS);
-        Task task3 = new Task("t3", "1", Status.DONE);
-        Task task4 = new Task("t4", "1", Status.DONE);
+    public HttpServer getHttpServer() {
+        return httpServer;
+    }
 
-        task2.setStartTime(LocalDateTime.now().minusSeconds(1000));
-        task2.setDuration(10);
-        task3.setStartTime(LocalDateTime.now().plusSeconds(10001));
-        task3.setDuration(100000);
-        //task4.setStartTime(LocalDateTime.now().minusSeconds(1000000));
-        //task4.setDuration(200000);
-        try {
-            manager.addTask(task1);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addTask(task2);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addTask(task3);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addTask(task4);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Epic epic1 = new Epic("e1", "2");
-        Epic epic2 = new Epic("e2", "2");
-        Epic epic3 = new Epic("e3", "2");
-        epic1.setStartTime(LocalDateTime.now());
-        epic1.setDuration(10000);
-        epic2.setStartTime(LocalDateTime.now());
-        epic2.setDuration(10000);
-
-        manager.addEpic(epic1);
-        manager.addEpic(epic2);
-        manager.addEpic(epic3);
-
-        String epic2ToJson = gson.toJson(epic2);
-        System.out.println(epic2ToJson);
-
-        SubTask subTask1 = new SubTask("st1", "3", Status.IN_PROGRESS, epic1.getId());
-        SubTask subTask2 = new SubTask("st2", "3", Status.DONE, epic1.getId());
-        SubTask subTask3 = new SubTask("st3", "3", Status.NEW, epic2.getId());
-        SubTask subTask4 = new SubTask("st4", "3", Status.DONE, epic3.getId());
-        subTask1.setStartTime(LocalDateTime.now().minusSeconds(1000000));
-        subTask1.setDuration(100000);
-
-        String subTask1ToJson = gson.toJson(subTask1);
-        System.out.println(subTask1ToJson);
-
-        subTask2.setStartTime(LocalDateTime.now().minusSeconds(10000000));
-        subTask2.setDuration(200000);
-        subTask3.setStartTime(LocalDateTime.now().minusSeconds(2000000));
-        subTask3.setDuration(400000);
-        try {
-            manager.addSubTask(subTask1);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addSubTask(subTask2);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addSubTask(subTask3);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.addSubTask(subTask4);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("S1: " + subTask1.getStartTime() + " " + subTask1.getEndTime());
-        System.out.println("S2: " + subTask2.getStartTime() + " " + subTask2.getEndTime());
-        System.out.println("S3: " + subTask3.getStartTime() + " " + subTask3.getEndTime());
-        System.out.println("S4: " + subTask4.getStartTime() + " " + subTask4.getEndTime());
-
-        System.out.println("Epic: " + epic1.getStartTime() + " " + epic1.getEndTime());
-
-        manager.getTask(1);
-        manager.getTask(2);
-        manager.getEpic(5);
-        manager.getTask(1);
-        manager.getTask(3);
-        manager.getSubTask(8);
-        manager.getEpic(4);
-        manager.getSubTask(10);
-        manager.getEpic(6);
-
-        manager.updateTask(1, new Task("t1", "fasdfas", Status.DONE));
-
-        List<Task> prioritizedtasks = manager.getPrioritizedTasks();
-        System.out.println("Задачи в порядке приоритета:");
-        for (Task task : prioritizedtasks) {
-            System.out.println(task);
-        }
-
-        try {
-            manager.addSubTask(subTask3);
-        } catch (TaskValidationException e) {
-            System.out.println(e.getMessage());
-        }
-        manager.getSubTask(11);
-
-        manager.removeEpic(4);
-
-        // Получение всех задач:
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks/task/");
-        HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            Type type = new TypeToken<ArrayList<Task>>() {
-            }.getType();
-            List<Task> taskList = gson.fromJson(response.body(), type);
-            System.out.println(taskList);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Добавление задачи:
-        Task task5 = new Task("t6", "1", Status.DONE);
-        String json = gson.toJson(task5);
-        System.out.println(json);
-        String uri = getJsonInUrlFormat(json, "http://localhost:8080/tasks/task/");
-        url = URI.create(uri);
-        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
-        request = HttpRequest.newBuilder().version(HttpClient.Version.HTTP_1_1).POST(body).uri(url).build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Получение задачи с id = 1:
-        url = URI.create("http://localhost:8080/tasks/task/?id=1");
-        request = HttpRequest.newBuilder().uri(url).GET().build();
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
-            Task task = gson.fromJson(responseBody, Task.class);
-            System.out.println(task);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    public TaskManager getFileBackedTasksManager() {
+        return fileBackedTasksManager;
     }
 }
+
+

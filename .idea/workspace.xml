@@ -5,22 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5cbee982-cf26-4454-96bf-a35d1e432f00" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/managers/taskmanager/httpmanager/HttpTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/5/050f3b5f1819e12243e13d42c13959c5e62c12b0" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/5/050f3b5f1819e12243e13d42c13959c5e62c12b0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/e/0e0e917f026ca037a6c69acf2332cb0530bacc81" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/9/197d530f8760203715fb4f23c6d7ea8e7b6d317b" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/1/21a45862de69fc2804a7a028677c4050a1cefc48" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/1/21a45862de69fc2804a7a028677c4050a1cefc48" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/2/3274c13c802fdd4f4c0bd72afbb851f447e32183" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/2/3274c13c802fdd4f4c0bd72afbb851f447e32183" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/f/4fe6e77f03ac7152d4695241009d6730c9ea8eb2" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/f/4fe6e77f03ac7152d4695241009d6730c9ea8eb2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/1/a18b36c4b7e5171ab7bb3e6527898ba185e1c94e" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/1/a18b36c4b7e5171ab7bb3e6527898ba185e1c94e" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/f/af5275229b1107370d92699ccf5539bafb50c515" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/f/af5275229b1107370d92699ccf5539bafb50c515" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/e/be8e5f7bb8881f9c0dd98d794b9868006675acb4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c704ef246dcd057d946174423a7712e5be4a2f3b" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c704ef246dcd057d946174423a7712e5be4a2f3b" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/5/d568ef636ce823ec1ef9105bf557a5e3caaf6720" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/0/f082b259a6fc92d5bd1ba3d0185ee52530220619" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/0/f082b259a6fc92d5bd1ba3d0185ee52530220619" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fe03b4fd3afe162c6e01309b98a22588e093d274" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/java-kanban/resources/Testing (sprint 7).csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/java-kanban/resources/Testing (sprint 7).csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/client/KVTaskClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/client/KVTaskClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/servers/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/servers/HttpTaskServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/http/servers/KVServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/http/servers/KVServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/Managers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/filemanager/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/filemanager/FileBackedTasksManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/httptaskmanager/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/httpmanager/HttpTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/memorymanager/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/memorymanager/InMemoryTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/managers/taskmanager/httpmanager/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/managers/taskmanager/httpmanager/HttpTaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources/Testing (sprint 7).csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/Testing (sprint 7).csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/http/servers/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/http/servers/HttpTaskServerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/managers/taskmanager/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/managers/taskmanager/filemanager/FileBackedTasksManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/managers/taskmanager/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/managers/taskmanager/memorymanager/InMemoryTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/managers/taskmanager/httpmanager/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/managers/taskmanager/httpmanager/HttpTaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,8 +38,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -54,13 +62,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "C:/dev/java-kanban"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\dev\java-kanban\src\resources" />
@@ -84,13 +93,13 @@
       <recent name="http.servers" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All in java-kanban (1)">
-    <configuration name="HttpTaskManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="managers.taskmanager.httpmanager.HttpTaskManager" />
+  <component name="RunManager" selected="JUnit.All in java-kanban (2)">
+    <configuration name="FileBackedTasksManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="managers.taskmanager.filemanager.FileBackedTasksManager" />
       <module name="java-kanban" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="managers.taskmanager.httpmanager.*" />
+          <option name="PATTERN" value="managers.taskmanager.filemanager.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -111,20 +120,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.Main" />
+    <configuration name="All in java-kanban (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-kanban" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="main.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="All in java-kanban (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in java-kanban (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-kanban" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
@@ -142,11 +146,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in java-kanban (2)" />
         <item itemvalue="JUnit.All in java-kanban (1)" />
-        <item itemvalue="Application.HttpTaskServer" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.HttpTaskManager" />
+        <item itemvalue="Application.FileBackedTasksManager" />
         <item itemvalue="JUnit.All in java-kanban" />
+        <item itemvalue="Application.HttpTaskServer" />
       </list>
     </recent_temporary>
   </component>
@@ -171,6 +175,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -1,6 +1,7 @@
 package managers.taskmanager.httpmanager;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import http.client.KVTaskClient;
 import managers.taskmanager.filemanager.FileBackedTasksManager;
 import tasks.Epic;
@@ -8,91 +9,125 @@ import tasks.SubTask;
 import tasks.Task;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
-    private KVTaskClient taskClient;
-
-    // FileBackedTasksManager нужен, чтобы добавляемым на сервер задачам присваивался корректный id.
-    private final FileBackedTasksManager fileBackedTasksManager
-            = new FileBackedTasksManager("src\\resources\\Testing (sprint 7).csv");
+    private final KVTaskClient taskClient;
+    private List<Task> tasks;
+    private List<Epic> epics;
+    private List<SubTask> subTasks;
+    private List<Task> history;
+    private final Gson gson = new Gson();
+    private String key;
 
     public HttpTaskManager(String url) throws IOException, InterruptedException {
-        super(url);
+        super("src\\resources\\Testing (sprint 7).csv");
         taskClient = new KVTaskClient(url);
+        tasks = super.getTasks();
+        epics = super.getEpics();
+        subTasks = super.getAllSubTasks();
+        history = super.getHistory();
     }
 
     @Override
-    public int addTask(Task task) {
-        fileBackedTasksManager.addTask(task);
+    public void save() {
+        tasks = super.getTasks();
+        epics = super.getEpics();
+        subTasks = super.getAllSubTasks();
+        history = super.getHistory();
+        TasksData tasksData = new TasksData(this);
+
+        String json = gson.toJson(tasksData);
+
         try {
-            taskClient.put(idToString(task), taskToJson(task));
+            taskClient.put(key, json);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        return task.getId();
     }
 
-    @Override
-    public Task updateTask(int taskId, Task task) {
-        fileBackedTasksManager.updateTask(taskId, task);
-        try {
-            taskClient.put(String.valueOf(taskId), taskToJson(task));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+    public static class TasksData {
+        private List<Task> tasksToSerialize = new ArrayList<>();
+        private List<Epic> epicsToSerialize = new ArrayList<>();
+        private List<SubTask> subTasksToSerialize = new ArrayList<>();
+        private List<Task> historyToSerialize = new ArrayList<>();
+
+        public TasksData(HttpTaskManager httpTaskManager) {
+            tasksToSerialize.addAll(httpTaskManager.tasks);
+            epicsToSerialize.addAll(httpTaskManager.epics);
+            subTasksToSerialize.addAll(httpTaskManager.subTasks);
+            historyToSerialize.addAll(httpTaskManager.history);
         }
-        return task;
-    }
 
-    @Override
-    public int addEpic(Epic epic) {
-        fileBackedTasksManager.addEpic(epic);
-        try {
-            taskClient.put(idToString(epic), taskToJson(epic));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        public List<Task> getTasks() {
+            return tasksToSerialize;
         }
-        return epic.getId();
-    }
 
-    @Override
-    public Epic updateEpic(int epicId, Epic epic) {
-        fileBackedTasksManager.updateEpic(epicId, epic);
-        try {
-            taskClient.put(String.valueOf(epicId), taskToJson(epic));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        public List<Epic> getEpics() {
+            return epicsToSerialize;
         }
-        return epic;
-    }
 
-    @Override
-    public int addSubTask(SubTask subTask) {
-        fileBackedTasksManager.addSubTask(subTask);
-        try {
-            taskClient.put(idToString(subTask), taskToJson(subTask));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        public List<SubTask> getSubTasks() {
+            return subTasksToSerialize;
         }
-        return subTask.getId();
-    }
 
-    @Override
-    public SubTask updateSubTask(int subTaskId, SubTask subTask) {
-        fileBackedTasksManager.updateSubTask(subTaskId, subTask);
-        try {
-            taskClient.put(String.valueOf(subTaskId), taskToJson(subTask));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        public List<Task> getHistory() {
+            return historyToSerialize;
         }
-        return subTask;
     }
 
-    private static String taskToJson(Task task) {
-        return new Gson().toJson(task);
+    public HttpTaskManager loadFromServer(String url, String key) throws IOException, InterruptedException {
+        HttpTaskManager httpTaskManager = new HttpTaskManager(url);
+
+        String serverData = taskClient.load(key);
+        Type type = new TypeToken<TasksData>() {
+        }.getType();
+        TasksData tasksData = gson.fromJson(serverData, type);
+
+        for (Task task : tasksData.getTasks()) {
+            Task newTask = new Task(task.getName(), task.getDescription(), task.getStatus());
+            newTask.setId(task.getId());
+            newTask.setStartTime(task.getStartTime());
+            newTask.setDuration(task.getDuration());
+            httpTaskManager.addTask(newTask);
+        }
+
+        for (Epic epic : tasksData.getEpics()) {
+            Epic newEpic = new Epic(epic.getName(), epic.getDescription());
+            newEpic.setId(epic.getId());
+            newEpic.setStartTime(epic.getStartTime());
+            newEpic.setDuration(epic.getDuration());
+            httpTaskManager.addEpic(newEpic);
+        }
+
+        for (SubTask subTask : tasksData.getSubTasks()) {
+            SubTask newSubTask = new SubTask(subTask.getName(), subTask.getDescription(), subTask.getStatus(),
+                    subTask.getEpicId());
+            newSubTask.setId(subTask.getId());
+            newSubTask.setStartTime(subTask.getStartTime());
+            newSubTask.setDuration(subTask.getDuration());
+            httpTaskManager.addSubTask(subTask);
+        }
+
+        if (tasksData.getHistory() != null) {
+            List<Integer> viewedTasksIds = new ArrayList<>();
+            for (Task task : tasksData.getHistory()) {
+                viewedTasksIds.add(task.getId());
+            }
+            for (int id : viewedTasksIds) {
+                httpTaskManager.getTask(id);
+                httpTaskManager.getEpic(id);
+                httpTaskManager.getSubTask(id);
+            }
+        }
+
+        return httpTaskManager;
     }
 
-    private static String idToString(Task task) {
-        return String.valueOf(task.getId());
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public KVTaskClient getTaskClient() {

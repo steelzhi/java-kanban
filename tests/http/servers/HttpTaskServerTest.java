@@ -5,7 +5,6 @@ package http.servers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sun.net.httpserver.HttpServer;
 import managers.taskmanager.TaskValidationException;
 import managers.taskmanager.filemanager.FileBackedTasksManager;
 import org.junit.jupiter.api.AfterEach;
@@ -18,7 +17,6 @@ import tasks.Task;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -31,7 +29,7 @@ import static http.servers.HttpTaskServer.getJsonInUrlFormat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
-    FileBackedTasksManager manager = (FileBackedTasksManager) HttpTaskServer.getfileBackedTasksManager();
+    FileBackedTasksManager manager;
     Gson gson = new Gson();
     HttpClient client = HttpClient.newHttpClient();
     URI url;
@@ -41,7 +39,7 @@ class HttpTaskServerTest {
     List<Task> taskList;
     List<Epic> epicList;
     List<SubTask> subTaskList;
-    HttpServer httpServer;
+    HttpTaskServer httpTaskServer;
     Task task1;
     Task task2;
     Task task3;
@@ -57,14 +55,8 @@ class HttpTaskServerTest {
 
     @BeforeEach
     public void addValuesAndActionsForTest() throws IOException {
-        httpServer = HttpServer.create(new InetSocketAddress(8080), 0);
-        httpServer.createContext("/tasks/task/", new HttpTaskServer.TasksHandler());
-        httpServer.createContext("/tasks/subtask/", new HttpTaskServer.SubTasksHandler());
-        httpServer.createContext("/tasks/epic/", new HttpTaskServer.EpicsHandler());
-        httpServer.createContext("/tasks/history/", new HttpTaskServer.HistoryHandler());
-        httpServer.createContext("/tasks/", new HttpTaskServer.PrioritizedTasksHandler());
-        httpServer.start();
-        System.out.println("Сервер начал работу.");
+        httpTaskServer = new HttpTaskServer();
+        manager = (FileBackedTasksManager) httpTaskServer.getFileBackedTasksManager();
 
         task1 = new Task("t1", "1", Status.NEW);
         task2 = new Task("t2", "1", Status.IN_PROGRESS);
@@ -162,8 +154,7 @@ class HttpTaskServerTest {
         request = HttpRequest.newBuilder().uri(url).GET().build();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            type = new TypeToken<ArrayList<Task>>() {
-            }.getType();
+            type = new TypeToken<ArrayList<Task>>() {}.getType();
             taskList = gson.fromJson(response.body(), type);
         } catch (IOException | InterruptedException e) {
         }
@@ -550,6 +541,6 @@ class HttpTaskServerTest {
         manager.removeAllEpics();
         manager.removeAllSubTasks();
         manager.resetTaskIds();
-        httpServer.stop(0);
+        httpTaskServer.getHttpServer().stop(0);
     }
 }

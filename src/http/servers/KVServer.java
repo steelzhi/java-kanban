@@ -129,8 +129,4 @@ public class KVServer {
     public void stop() {
         server.stop(0);
     }
-
-    public Map<String, String> getData() {
-        return data;
-    }
 }

@@ -7,11 +7,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class KVTaskClient {
-    private String url;
+    private final String url;
     private String apiToken;
     private HttpClient httpClient;
 
-    public KVTaskClient(String url) throws IOException, InterruptedException {
+    public KVTaskClient(String url) throws IllegalArgumentException, IOException, InterruptedException {
         this.url = url;
         httpClient = HttpClient.newHttpClient();
         String registerQuery = "register";
