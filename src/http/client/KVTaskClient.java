@@ -11,7 +11,7 @@ public class KVTaskClient {
     private String apiToken;
     private HttpClient httpClient;
 
-    public KVTaskClient(String url) throws IllegalArgumentException, IOException, InterruptedException {
+    public KVTaskClient(String url) {
         this.url = url;
         httpClient = HttpClient.newHttpClient();
         String registerQuery = "register";
@@ -23,12 +23,17 @@ public class KVTaskClient {
                 .build();
 
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        HttpResponse<String> response = httpClient.send(request, handler);
+        HttpResponse<String> response;
+        try {
+            response = httpClient.send(request, handler);
+        } catch (IOException | InterruptedException e) {
+            throw new KVTaskClientException("Возникла ошибка при создании http-клиента");
+        }
 
         apiToken = response.body();
     }
 
-    public void put(String key, String json) throws IOException, InterruptedException {
+    public void put(String key, String json) {
         URI uri = URI.create(url + "save/" + key + "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -36,10 +41,14 @@ public class KVTaskClient {
                 .build();
 
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        httpClient.send(request, handler);
+        try {
+            httpClient.send(request, handler);
+        } catch (IOException | InterruptedException e) {
+            throw new KVTaskClientException("Возникла ошибка при отправке на http-сервер");
+        }
     }
 
-    public String load(String key) throws IOException, InterruptedException {
+    public String load(String key) {
         URI uri = URI.create(url + "load/" + key + "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -47,7 +56,12 @@ public class KVTaskClient {
                 .build();
 
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        HttpResponse<String> response = httpClient.send(request, handler);
+        HttpResponse<String> response;
+        try {
+            response = httpClient.send(request, handler);
+        } catch (IOException | InterruptedException e) {
+            throw new KVTaskClientException("Возникла ошибка при загрузке с http-сервера");
+        }
         return response.body();
     }
 }

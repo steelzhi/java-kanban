@@ -1,7 +1,6 @@
 package http.servers;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -9,7 +8,6 @@ import managers.Managers;
 import managers.taskmanager.TaskManager;
 import managers.taskmanager.TaskValidationException;
 import tasks.Epic;
-import tasks.Status;
 import tasks.SubTask;
 import tasks.Task;
 
@@ -17,13 +15,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Type;
 
 public class HttpTaskServer {
     private TaskManager fileBackedTasksManager;

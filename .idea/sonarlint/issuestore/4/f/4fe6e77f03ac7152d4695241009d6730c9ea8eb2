@@ -1,58 +1,44 @@
 
 m
-java:S1192>"QDefine a constant instead of duplicating this literal "/tasks/task/?id=" 4 times.(¯æº78¿ü¿¥å0
+java:S11926"QDefine a constant instead of duplicating this literal "/tasks/task/?id=" 4 times.(¯æº78¿ü¿¥å0
 e
-java:S1192$"PDefine a constant instead of duplicating this literal "/tasks/subtask/" 8 times.(àÛƒ
+java:S1192"PDefine a constant instead of duplicating this literal "/tasks/subtask/" 8 times.(àÛƒ
 i
-java:S1192T"GDefine a constant instead of duplicating this literal "DELETE" 7 times.(¾ÁäÍûÿÿÿÿ8¿ü¿¥å0
+java:S1192L"GDefine a constant instead of duplicating this literal "DELETE" 7 times.(¾ÁäÍûÿÿÿÿ8¿ü¿¥å0
 e
-java:S1192'"HDefine a constant instead of duplicating this literal "/tasks/" 4 times.(Û¿™•8¿ü¿¥å0
-w
-java:S1192„"TDefine a constant instead of duplicating this literal "/tasks/subtask/?id=" 4 times.(äÍùüÿÿÿÿ8Àü¿¥å0
+java:S1192"HDefine a constant instead of duplicating this literal "/tasks/" 4 times.(Û¿™•8¿ü¿¥å0
+v
+java:S1192|"TDefine a constant instead of duplicating this literal "/tasks/subtask/?id=" 4 times.(äÍùüÿÿÿÿ8Àü¿¥å0
 h
-java:S1192#"MDefine a constant instead of duplicating this literal "/tasks/task/" 8 times.(óÓ´“üÿÿÿÿ
+java:S1192"MDefine a constant instead of duplicating this literal "/tasks/task/" 8 times.(óÓ´“üÿÿÿÿ
 h
-java:S1192%"MDefine a constant instead of duplicating this literal "/tasks/epic/" 8 times.(ìÜ×˜üÿÿÿÿ
+java:S1192"MDefine a constant instead of duplicating this literal "/tasks/epic/" 8 times.(ìÜ×˜üÿÿÿÿ
 k
-java:S1192&"PDefine a constant instead of duplicating this literal "/tasks/history/" 3 times.(°Œœ²şÿÿÿÿ
+java:S1192"PDefine a constant instead of duplicating this literal "/tasks/history/" 3 times.(°Œœ²şÿÿÿÿ
 o
-java:S1192À"QDefine a constant instead of duplicating this literal "/tasks/epic/?id=" 4 times.(®Ñ¢ø8Àü¿¥å0
+java:S1192¸"QDefine a constant instead of duplicating this literal "/tasks/epic/?id=" 4 times.(®Ñ¢ø8Àü¿¥å0
 L
-java:S1066U"/Merge this if statement with the enclosing one.(–µÜ‹8Áü¿¥å0
+java:S1066M"/Merge this if statement with the enclosing one.(–µÜ‹8Áü¿¥å0
 M
-java:S1066š"/Merge this if statement with the enclosing one.(–µÜ‹8Âü¿¥å0
+java:S1066’"/Merge this if statement with the enclosing one.(–µÜ‹8Âü¿¥å0
 M
-java:S1066Ø"/Merge this if statement with the enclosing one.(–µÜ‹8Âü¿¥å0
+java:S1066Ğ"/Merge this if statement with the enclosing one.(–µÜ‹8Âü¿¥å0
 R
-java:S1066¬"/Merge this if statement with the enclosing one.(«û‘ƒÿÿÿÿÿ8Âü¿¥å0
+java:S1066¤"/Merge this if statement with the enclosing one.(«û‘ƒÿÿÿÿÿ8Âü¿¥å0
 „
-java:S1488È"hImmediately return this expression instead of assigning it to the temporary variable "taskInJsonFormat".(ƒòôÅùÿÿÿÿ
+java:S1488À"hImmediately return this expression instead of assigning it to the temporary variable "taskInJsonFormat".(ƒòôÅùÿÿÿÿ
 w
-java:S1488ó"ZImmediately return this expression instead of assigning it to the temporary variable "id".(Ø”Ào8Äü¿¥å0
+java:S1488ë"ZImmediately return this expression instead of assigning it to the temporary variable "id".(Ø”Ào8Äü¿¥å0
 Š
-java:S1488 "gImmediately return this expression instead of assigning it to the temporary variable "jsonInUrlFormat".(ã¯çşûÿÿÿÿ8Äü¿¥å0
+java:S1488˜"gImmediately return this expression instead of assigning it to the temporary variable "jsonInUrlFormat".(ã¯çşûÿÿÿÿ8Äü¿¥å0
 R
-java:S1191"5Use classes from the Java API instead of Sun classes.(üÕÙä8ıšÁ¥å0
-U	java:S106)"9Replace this use of System.out or System.err by a logger.(¹²––8¼ş¿¥å0
+java:S1191"5Use classes from the Java API instead of Sun classes.(üÕÙä8­Ğ»Ñå0
+U	java:S106!"9Replace this use of System.out or System.err by a logger.(¹²––8¼ş¿¥å0
 o
-java:S3776/"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(›ûè´8¸óÂ¥å0
+java:S3776'"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(›ûè´8¸óÂ¥å0
 o
-java:S3776k"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(›ûè´8¿óÂ¥å0
+java:S3776c"RRefactor this method to reduce its Cognitive Complexity from 27 to the 15 allowed.(›ûè´8¿óÂ¥å0
 p
-java:S3776±"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(›ûè´8ÕóÂ¥å0
-V	java:S106¹"9Replace this use of System.out or System.err by a logger.(¾Ï”8¾ş¿¥å0
-[	java:S106ö"9Replace this use of System.out or System.err by a logger.(÷­Šşÿÿÿÿ8Àş¿¥å0
-`
-java:S1128">Remove this unused import 'com.google.gson.reflect.TypeToken'.(İªıñøÿÿÿÿ8¦–†¦å0
-K
-java:S1128")Remove this unused import 'tasks.Status'.(øóÔ“ıÿÿÿÿ8§–†¦å0
-W
-java:S1128"5Remove this unused import 'java.net.http.HttpClient'.(Œ³’Öşÿÿÿÿ8§–†¦å0
-X
-java:S1128"6Remove this unused import 'java.net.http.HttpRequest'.(ş€ŠÍşÿÿÿÿ8§–†¦å0
-Y
-java:S1128"7Remove this unused import 'java.net.http.HttpResponse'.(’ûÌûÿÿÿÿ8§–†¦å0
-V
-java:S1128"4Remove this unused import 'java.time.LocalDateTime'.(æÃ§ƒüÿÿÿÿ8§–†¦å0
-M
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8§–†¦å0
+java:S3776©"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(›ûè´8ÕóÂ¥å0
+V	java:S106±"9Replace this use of System.out or System.err by a logger.(¾Ï”8¾ş¿¥å0
+[	java:S106î"9Replace this use of System.out or System.err by a logger.(÷­Šşÿÿÿÿ8Àş¿¥å0

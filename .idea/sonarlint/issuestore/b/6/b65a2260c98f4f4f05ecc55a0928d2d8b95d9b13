@@ -1,3 +1,4 @@
 
-t
-java:S2142."^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ò¶È
+j	java:S116"NRename this field "KEY" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ôŸ©„8®¹‚Ñå0
+>
+java:S1170"!Make this final field static too.(ôŸ©„8¯¹‚Ñå0

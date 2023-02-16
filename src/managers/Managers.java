@@ -6,12 +6,10 @@ import managers.taskmanager.TaskManager;
 import managers.taskmanager.filemanager.FileBackedTasksManager;
 import managers.taskmanager.httpmanager.HttpTaskManager;
 
-import java.io.IOException;
-
 public class Managers {
     private static final String URL = "http://localhost:8080/";
 
-    public static TaskManager getDefault() throws IOException, InterruptedException {
+    public static TaskManager getDefault() {
         return new HttpTaskManager(URL);
     }
 

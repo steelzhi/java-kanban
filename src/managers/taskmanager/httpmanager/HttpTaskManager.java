@@ -8,44 +8,25 @@ import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private final KVTaskClient taskClient;
-    private List<Task> tasks;
-    private List<Epic> epics;
-    private List<SubTask> subTasks;
-    private List<Task> history;
     private final Gson gson = new Gson();
-    private String key;
+    private final String KEY = "1";
 
-    public HttpTaskManager(String url) throws IOException, InterruptedException {
-        super("src\\resources\\Testing (sprint 7).csv");
+    public HttpTaskManager(String url) {
+        super(null);
         taskClient = new KVTaskClient(url);
-        tasks = super.getTasks();
-        epics = super.getEpics();
-        subTasks = super.getAllSubTasks();
-        history = super.getHistory();
     }
 
     @Override
     public void save() {
-        tasks = super.getTasks();
-        epics = super.getEpics();
-        subTasks = super.getAllSubTasks();
-        history = super.getHistory();
         TasksData tasksData = new TasksData(this);
-
         String json = gson.toJson(tasksData);
-
-        try {
-            taskClient.put(key, json);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        taskClient.put(KEY, json);
     }
 
     public static class TasksData {
@@ -55,10 +36,10 @@ public class HttpTaskManager extends FileBackedTasksManager {
         private List<Task> historyToSerialize = new ArrayList<>();
 
         public TasksData(HttpTaskManager httpTaskManager) {
-            tasksToSerialize.addAll(httpTaskManager.tasks);
-            epicsToSerialize.addAll(httpTaskManager.epics);
-            subTasksToSerialize.addAll(httpTaskManager.subTasks);
-            historyToSerialize.addAll(httpTaskManager.history);
+            tasksToSerialize.addAll(httpTaskManager.tasks.values());
+            epicsToSerialize.addAll(httpTaskManager.epics.values());
+            subTasksToSerialize.addAll(httpTaskManager.subTasks.values());
+            historyToSerialize.addAll(httpTaskManager.getHistory());
         }
 
         public List<Task> getTasks() {
@@ -78,7 +59,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
-    public HttpTaskManager loadFromServer(String url, String key) throws IOException, InterruptedException {
+    public HttpTaskManager loadFromServer(String url, String key) {
         HttpTaskManager httpTaskManager = new HttpTaskManager(url);
 
         String serverData = taskClient.load(key);
@@ -126,11 +107,11 @@ public class HttpTaskManager extends FileBackedTasksManager {
         return httpTaskManager;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public KVTaskClient getTaskClient() {
         return taskClient;
+    }
+
+    public String getKEY() {
+        return KEY;
     }
 }
